@@ -165,6 +165,18 @@
     });
   };
 
+  // Floating "Subscribe free" pill steps aside when the footer (with its own form) is in view.
+  const floater = $('[data-floater]');
+  const foot = $('.footer');
+  if (floater && foot && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => floater.classList.toggle('is-hidden', e.isIntersecting)).observe(foot);
+  }
+
+  // Copy-link buttons on articles.
+  $$('[data-copy]').forEach((b) => b.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(b.dataset.copy); b.classList.add('is-done'); setTimeout(() => b.classList.remove('is-done'), 1600); } catch { /* clipboard unavailable */ }
+  }));
+
   // Masthead settles into a compact state once the page scrolls.
   const masthead = $('[data-masthead]');
   const progress = $('[data-progress]');

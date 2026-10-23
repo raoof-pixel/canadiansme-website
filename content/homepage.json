@@ -171,6 +171,11 @@
         },
         {
           "kind": "story",
+          "post": "selling-beside-canadas-top-tech-retailer-how-best-buy-marketplace-opens-doors-for-small-sellers",
+          "label": "Retail"
+        },
+        {
+          "kind": "story",
           "post": "beyond-the-tariff-rate-what-canadian-importers-need-to-know-as-u-s-canada-trade-rules-shift",
           "label": "In partnership with UPS"
         },
@@ -189,59 +194,67 @@
       ]
     },
     {
-      "type": "trending",
-      "title": "Trending",
-      "topics": [
-        "artificial-intelligence",
-        "finance-for-small-businesses",
-        "cybersecurity-for-small-businesses",
-        "women-entrepreneurship",
-        "entrepreneurship",
-        "small-business-leadership",
-        "economy",
-        "technology"
-      ]
-    },
-    {
-      "type": "featured-row",
-      "posts": [
-        "beyond-banking-august-haig-on-financial-inclusion-and-economic-opportunity-for-2slgbtq-businesses",
-        "navigating-it-in-the-age-of-ai-why-proactive-it-has-become-a-business-essential",
-        "faster-deals-stronger-connections-how-duca-financial-services-credit-union-ltd-and-pfg-financial-are-raising-the-bar-for-business-consultant-and-accountant-partnerships",
-        "why-canadian-smes-need-an-ai-strategy"
-      ]
-    },
-    {
-      "type": "main-sidebar",
-      "title": "Exclusive stories",
-      "more": "category/interviews/",
+      "type": "stories",
       "rows": [
         "building-high-trust-teams-through-emotional-intelligence",
+        "selling-beside-canadas-top-tech-retailer-how-best-buy-marketplace-opens-doors-for-small-sellers",
         "beyond-the-tariff-rate-what-canadian-importers-need-to-know-as-u-s-canada-trade-rules-shift",
-        "business-woman-of-the-month-sandra-corelli",
-        "canada-first-growth-how-rvezy-scaled-north-america",
-        "rural-seaweed-global-skincare-7-fathoms-journey"
+        "the-growing-pains-of-leadership-why-strong-teams-cant-depend-on-one-person"
       ],
+      "banner": {
+        "magazine": "oct-2026",
+        "title": "The October issue is out now",
+        "text": "Building high-trust teams, Small Business Month 2026 and more. Read it free, right here on the page.",
+        "button": "Read the October issue"
+      },
       "sideTitle": "Around CanadianSME",
       "side": [
-        "how-canadian-entrepreneurs-are-transforming-local-problems-into-opportunities",
-        "celebrating-small-business-month-2026-and-powering-canadas-entrepreneurs",
-        "a-smarter-start-to-cloud-for-canadian-smes",
-        "canadas-entrepreneurs-shaping-the-future-of-business",
-        "rethinking-retail-why-dynamic-pricing-is-the-true-driver-of-small-business-innovation",
-        "anastasiia-shumilo-from-developer-to-founder-shumi-technologies-ai-vision"
+        "how-canadian-smes-can-turn-ai-ideas-into-working-business-systems",
+        "rural-seaweed-global-skincare-7-fathoms-journey",
+        "from-hubdoc-to-inletap-matt-sergeant-on-simplifying-accounts-payable",
+        "expanding-everyday-acceptance-how-american-express-canada-is-reshaping-merchant-payments",
+        "repair-refurbish-repeat-the-triple-revenue-model-driving-dr-phone-fixs-national-expansion"
       ],
-      "ad": "ups-skyscraper",
       "promo": {
-        "title": "We go beyond the headlines to bring you the full story of Canadian small business.",
-        "text": "Free every month: interviews, guides and the latest issue of the magazine.",
-        "button": "Subscribe free",
-        "href": "subscription/"
+        "magazine": "oct-2026",
+        "title": "We go beyond the headlines to bring you the",
+        "accent": "full story",
+        "text": "Subscribe to CanadianSME for free: every new issue, event updates and business insights in your inbox."
       }
     },
     {
       "type": "ad",
       "ad": "ups-leaderboard"
+    },
+    {
+      "type": "carousel",
+      "title": "Latest in technology this week",
+      "more": "category/technology/",
+      "posts": [
+        "5-leading-pos-systems-for-canadian-restaurants",
+        "altoleap-building-the-software-that-replaces-the-spreadsheet-everyone-depends-on",
+        "building-beyond-borders-how-adventure-outdoors-is-using-technology-to-scale-a-canadian-business",
+        "moving-beyond-digital-tools-to-build-stronger-sme-operations-in-canada",
+        "pathway-communications-thirty-years-of-keeping-canadian-data-in-canada",
+        "hic-global-solutions-a-salesforce-specialist-operating-across-four-countries",
+        "navigating-it-in-the-age-of-ai-why-proactive-it-has-become-a-business-essential",
+        "how-canadian-smes-can-make-better-technology-decisions-the-procurepro-approach",
+        "bluebird-it-the-it-team-behind-your-doctors-computer"
+      ]
+    },
+    {
+      "type": "feature",
+      "category": "interviews",
+      "lead": "rural-seaweed-global-skincare-7-fathoms-journey",
+      "moreTitle": "More interviews",
+      "more": [
+        "dream-wars-and-myths-native-storytelling-with-andrea-grant",
+        "small-business-big-impact-supporting-ontario-entrepreneurs-through-uncertainty",
+        "making-cross-border-money-work-harder-for-canadian-smes"
+      ],
+      "sideTitle": "Latest news",
+      "sideCategory": "latest-news",
+      "sideCount": 6
     },
     {
       "type": "podcast",
@@ -272,78 +285,8 @@
       "ad": "ai-breakdown"
     },
     {
-      "type": "insights",
-      "title": "Latest business insights",
-      "text": "Timely perspectives, practical advice and inspiring stories for Canada’s small business community.",
-      "filters": [
-        "interviews",
-        "small-business",
-        "entrepreneurship",
-        "artificial-intelligence",
-        "finance-for-small-businesses",
-        "technology",
-        "marketing"
-      ],
-      "posts": [
-        "making-cross-border-money-work-harder-for-canadian-smes",
-        "how-canadian-entrepreneurs-are-transforming-local-problems-into-opportunities",
-        "celebrating-small-business-month-2026-and-powering-canadas-entrepreneurs",
-        "a-smarter-start-to-cloud-for-canadian-smes",
-        "canadas-entrepreneurs-shaping-the-future-of-business",
-        "rethinking-retail-why-dynamic-pricing-is-the-true-driver-of-small-business-innovation",
-        "anastasiia-shumilo-from-developer-to-founder-shumi-technologies-ai-vision",
-        "helping-canadian-smes-embrace-ai-without-data-security-risks",
-        "why-canadian-smes-need-an-ai-strategy",
-        "the-resilient-sme-building-growth-through-digital-innovation-and-cyber-readiness",
-        "closing-the-chronic-pain-care-gap-dr-zameer-piranis-vision-for-rapid-access",
-        "unlocking-growth-through-government-funding-and-advisory-programs",
-        "canada-first-growth-how-rvezy-scaled-north-america",
-        "giving-busy-canadians-back-what-matters-most-time",
-        "building-in-public-how-stan-creates-momentum",
-        "preparing-canadian-businesses-for-cyber-risks-ransomware-and-fraud-threats",
-        "bringing-the-wow-factor-to-everyday-employee-connectivity",
-        "the-cra-registration-change-that-depends-on-whether-you-have-filed",
-        "technology-empowering-indigenous-and-diverse-entrepreneurs",
-        "stop-trying-to-sound-like-a-big-brand-2",
-        "what-happens-to-institutional-knowledge-when-that-employee-leaves",
-        "top-5-business-internet-providers-for-small-businesses-in-canada",
-        "building-a-small-business-foundation-today-for-growth-tomorrow",
-        "magnet-at-toronto-metropolitan-university",
-        "ingaged-creative-productions-growing-through-creativity-connection-and-community",
-        "5-leading-pos-systems-for-canadian-restaurants",
-        "altoleap-building-the-software-that-replaces-the-spreadsheet-everyone-depends-on",
-        "building-beyond-borders-how-adventure-outdoors-is-using-technology-to-scale-a-canadian-business",
-        "moving-beyond-digital-tools-to-build-stronger-sme-operations-in-canada",
-        "pathway-communications-thirty-years-of-keeping-canadian-data-in-canada",
-        "hic-global-solutions-a-salesforce-specialist-operating-across-four-countries",
-        "navigating-it-in-the-age-of-ai-why-proactive-it-has-become-a-business-essential",
-        "how-canadian-smes-can-make-better-technology-decisions-the-procurepro-approach"
-      ],
-      "show": 9,
-      "ads": [
-        "wsib-box",
-        "adp-box"
-      ]
-    },
-    {
       "type": "carousel",
-      "title": "Latest in technology this week",
-      "more": "category/technology/",
-      "posts": [
-        "5-leading-pos-systems-for-canadian-restaurants",
-        "altoleap-building-the-software-that-replaces-the-spreadsheet-everyone-depends-on",
-        "building-beyond-borders-how-adventure-outdoors-is-using-technology-to-scale-a-canadian-business",
-        "moving-beyond-digital-tools-to-build-stronger-sme-operations-in-canada",
-        "pathway-communications-thirty-years-of-keeping-canadian-data-in-canada",
-        "hic-global-solutions-a-salesforce-specialist-operating-across-four-countries",
-        "navigating-it-in-the-age-of-ai-why-proactive-it-has-become-a-business-essential",
-        "how-canadian-smes-can-make-better-technology-decisions-the-procurepro-approach",
-        "bluebird-it-the-it-team-behind-your-doctors-computer"
-      ]
-    },
-    {
-      "type": "carousel",
-      "title": "Artificial intelligence",
+      "title": "Latest in artificial intelligence",
       "more": "category/artificial-intelligence/",
       "posts": [
         "helping-canadian-smes-embrace-ai-without-data-security-risks",
@@ -355,24 +298,23 @@
         "5-best-ai-tools-for-canadian-small-businesses",
         "why-human-communication-matters-more-in-the-ai-era",
         "from-youtube-university-to-the-app-store-how-mick-brown-built-heyup-with-ai"
-      ]
+      ],
+      "soft": true
     },
     {
-      "type": "carousel",
-      "title": "In conversation",
-      "more": "category/interviews/",
-      "posts": [
-        "rural-seaweed-global-skincare-7-fathoms-journey",
-        "dream-wars-and-myths-native-storytelling-with-andrea-grant",
-        "small-business-big-impact-supporting-ontario-entrepreneurs-through-uncertainty",
-        "making-cross-border-money-work-harder-for-canadian-smes",
-        "building-high-trust-teams-through-emotional-intelligence",
-        "anastasiia-shumilo-from-developer-to-founder-shumi-technologies-ai-vision",
-        "closing-the-chronic-pain-care-gap-dr-zameer-piranis-vision-for-rapid-access",
-        "giving-busy-canadians-back-what-matters-most-time",
-        "building-in-public-how-stan-creates-momentum"
+      "type": "feature",
+      "category": "women-entrepreneurship",
+      "lead": "business-woman-of-the-month-sandra-corelli",
+      "moreTitle": "More women entrepreneurs",
+      "more": [
+        "canadas-women-entrepreneurs-driving-technology-and-growth",
+        "business-woman-of-the-month-hilary-borndah",
+        "business-woman-of-the-month-nouhaila-chelkhaoui"
       ],
-      "style": "portrait"
+      "sideTitle": "Finance",
+      "sideCategory": "finance-for-small-businesses",
+      "sideCount": 4,
+      "ad": "adp-box"
     },
     {
       "type": "partner-content",
@@ -390,36 +332,26 @@
       }
     },
     {
-      "type": "two-col-lists",
-      "blocks": [
-        {
-          "title": "Women entrepreneurs",
-          "more": "category/women-entrepreneurship/",
-          "posts": [
-            "business-woman-of-the-month-sandra-corelli",
-            "canadas-women-entrepreneurs-driving-technology-and-growth",
-            "business-woman-of-the-month-hilary-borndah"
-          ]
-        },
-        {
-          "title": "Editor’s pick",
-          "more": "category/editors-pick/",
-          "posts": [
-            "expert-advice-from-louise-southall-on-thriving-amidst-economic-shifts",
-            "an-innovative-leader-with-a-passion-for-helping-communities-thrive-through-financial-enablement",
-            "the-endowment-effect-you-make-it-you-own-it"
-          ]
-        },
-        {
-          "title": "Small business",
-          "more": "category/small-business/",
-          "posts": [
-            "what-happens-to-institutional-knowledge-when-that-employee-leaves",
-            "top-5-business-internet-providers-for-small-businesses-in-canada",
-            "building-a-small-business-foundation-today-for-growth-tomorrow"
-          ]
-        }
-      ]
+      "type": "feature",
+      "category": "small-business-leadership",
+      "lead": "why-key-person-dependence-quietly-destroys-business-value",
+      "moreTitle": "More on leadership",
+      "more": [
+        "how-to-scale-a-foundation-repair-business-without-sacrificing-quality",
+        "showpass-the-calgary-company-betting-on-independent-event-organizers"
+      ],
+      "sideTitle": "Marketing",
+      "sideCategory": "marketing",
+      "sideCount": 4,
+      "ad": "wsib-box",
+      "flip": true
+    },
+    {
+      "type": "carousel",
+      "title": "Editor’s pick",
+      "more": "category/editors-pick/",
+      "category": "editors-pick",
+      "soft": true
     },
     {
       "type": "magazine-band",
@@ -442,14 +374,5 @@
       "button": "Share your story",
       "href": "start-up-stories/"
     }
-  ],
-  "rails": {
-    "left": {
-      "type": "magazine",
-      "magazine": "oct-2026"
-    },
-    "right": {
-      "type": "subscribe"
-    }
-  }
+  ]
 }
