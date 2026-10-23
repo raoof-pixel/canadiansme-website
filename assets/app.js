@@ -7,8 +7,11 @@
   // Hide images that fail to load; their soft placeholder background shows instead.
   const markMissing = (img) => img.classList.add('is-missing');
   $$('img').forEach((img) => {
-    if (img.complete && img.naturalWidth === 0) markMissing(img);
-    else img.addEventListener('error', () => markMissing(img), { once: true });
+    // A lazy image that hasn't started loading also reports complete with no size,
+    // so only treat eager images that way; everything else waits for a real error.
+    if (img.loading !== 'lazy' && img.complete && img.naturalWidth === 0) markMissing(img);
+    img.addEventListener('error', () => markMissing(img), { once: true });
+    img.addEventListener('load', () => img.classList.remove('is-missing'));
   });
 
   // Magazine slider: soft crossfade, auto-advance, pause on hover/focus, swipe.
