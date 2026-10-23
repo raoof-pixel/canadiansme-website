@@ -1,28 +1,110 @@
 {
   "name": "CanadianSME",
   "fullName": "CanadianSME Small Business Magazine",
-  "tagline": "News, ideas and stories for Canada's small and medium-sized businesses.",
+  "tagline": "Empowering Canadian small and medium enterprises with news, interviews and practical insight.",
   "url": "https://canadiansme.ca",
   "locale": "en-CA",
   "nav": [
     "latest-news",
     "small-business-leadership",
     "interviews",
+    "entrepreneurship",
     "technology",
     "women-entrepreneurship",
-    "finance-for-small-businesses",
-    "marketing"
+    "finance-for-small-businesses"
   ],
   "utilityLinks": [
-    { "label": "Magazine", "href": "https://canadiansme.ca/magazine/" },
-    { "label": "Podcast", "href": "https://canadiansme.ca/podcast/" },
-    { "label": "Events", "href": "https://canadiansme.ca/category/events/" },
-    { "label": "Contact", "href": "https://canadiansme.ca/contact-us/" }
+    {
+      "label": "Magazine",
+      "href": "https://issuu.com/canadiansme"
+    },
+    {
+      "label": "Podcast",
+      "href": "podcast/"
+    },
+    {
+      "label": "Business Awards",
+      "href": "https://www.smeawards.ca/"
+    },
+    {
+      "label": "Summit",
+      "href": "https://www.smesummit.ca/"
+    },
+    {
+      "label": "Expo",
+      "href": "https://www.smeexpo.ca/"
+    },
+    {
+      "label": "UPS Small Business",
+      "href": "ups-small-business/"
+    },
+    {
+      "label": "Advertise",
+      "href": "contact-us/"
+    }
+  ],
+  "footerLinks": [
+    {
+      "label": "About us",
+      "href": "about-us/"
+    },
+    {
+      "label": "Podcast",
+      "href": "podcast/"
+    },
+    {
+      "label": "Start-up stories",
+      "href": "start-up-stories/"
+    },
+    {
+      "label": "UPS Small Business",
+      "href": "ups-small-business/"
+    },
+    {
+      "label": "Subscribe",
+      "href": "subscription/"
+    },
+    {
+      "label": "Contact us",
+      "href": "contact-us/"
+    },
+    {
+      "label": "Privacy policy",
+      "href": "https://canadiansme.ca/privacy-policy/"
+    },
+    {
+      "label": "Terms of service",
+      "href": "https://canadiansme.ca/terms-of-service/"
+    }
   ],
   "social": [
-    { "label": "X", "href": "https://x.com/canadian_sme" },
-    { "label": "LinkedIn", "href": "https://www.linkedin.com/company/canadiansme/" },
-    { "label": "Instagram", "href": "https://www.instagram.com/canadiansme/" },
-    { "label": "Facebook", "href": "https://www.facebook.com/CanadianSME/" }
-  ]
+    {
+      "label": "Facebook",
+      "href": "https://facebook.com/canadiansme"
+    },
+    {
+      "label": "Instagram",
+      "href": "https://www.instagram.com/canadiansme"
+    },
+    {
+      "label": "LinkedIn",
+      "href": "https://www.linkedin.com/company/canadiansme-business-magazine/"
+    },
+    {
+      "label": "X",
+      "href": "https://x.com/canadian_sme"
+    },
+    {
+      "label": "YouTube",
+      "href": "https://www.youtube.com/channel/UCM8xNX6MJ3KILM56S_GuG_Q"
+    }
+  ],
+  "contact": {
+    "company": "Cmarketing Inc",
+    "address": "6345 Dixie Rd, Unit 202, Mississauga, ON L5T 2E6",
+    "phones": [
+      "+1 416 655 0205",
+      "+1 437 778 4446"
+    ]
+  }
 }

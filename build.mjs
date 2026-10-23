@@ -16,8 +16,16 @@ const readJSON = async (p) => JSON.parse(await readFile(join(root, p), 'utf8'));
 
 const site = await readJSON('content/site.json');
 const categoriesList = await readJSON('content/categories.json');
-const authorsList = await readJSON('content/authors.json');
-const rawPosts = await readJSON('content/posts.json');
+const authorsList = [...(await readJSON('content/authors.json')), ...(await readJSON('content/authors-more.json'))];
+const rawPosts = [...(await readJSON('content/posts.json')), ...(await readJSON('content/posts-more.json'))];
+const home = await readJSON('content/homepage.json');
+const pages = await readJSON('content/pages.json');
+
+const seenSlugs = new Set();
+for (const p of rawPosts) {
+  if (seenSlugs.has(p.slug)) throw new Error(`Duplicate post slug: ${p.slug}`);
+  seenSlugs.add(p.slug);
+}
 
 const categories = Object.fromEntries(categoriesList.map((c) => [c.slug, c]));
 const authors = Object.fromEntries(authorsList.map((a) => [a.slug, a]));
@@ -45,7 +53,8 @@ const now = new Date(posts[0].date);
 
 const searchIndex = posts.map((p) => ({ s: p.slug, t: p.title, c: categories[p.category].name }));
 
-const base = { site, categories, authors, posts, byCategory, featured, latest: posts, now, searchIndex };
+const postsBySlug = Object.fromEntries(posts.map((p) => [p.slug, p]));
+const base = { site, categories, authors, posts, postsBySlug, byCategory, featured, latest: posts, now, searchIndex, home };
 
 async function emit(path, render) {
   const depth = path.split('/').length - 1;
@@ -62,11 +71,16 @@ await emit('index.html', (ctx) => t.home(ctx));
 for (const p of posts) await emit(`${p.slug}/index.html`, (ctx) => t.article(ctx, p, bodies[p.slug]));
 for (const c of categoriesList) await emit(`category/${c.slug}/index.html`, (ctx) => t.category(ctx, c));
 for (const a of authorsList) await emit(`author/${a.slug}/index.html`, (ctx) => t.authorPage(ctx, a));
+for (const pg of pages) {
+  const html = await readFile(join(root, 'content/pages', `${pg.file}.html`), 'utf8');
+  await emit(`${pg.slug}/index.html`, (ctx) => t.staticPage(ctx, pg, html));
+}
 await emit('404.html', (ctx) => t.notFound(ctx));
 
 // SEO files
 const urls = [
   `${site.url}/`,
+  ...pages.map((p) => `${site.url}/${p.slug}/`),
   ...posts.map((p) => `${site.url}/${p.slug}/`),
   ...categoriesList.map((c) => `${site.url}/category/${c.slug}/`),
   ...authorsList.map((a) => `${site.url}/author/${a.slug}/`),

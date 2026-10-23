@@ -8,7 +8,9 @@ export const esc = (s = '') =>
     .replace(/"/g, '&quot;');
 
 // Jetpack image CDN (i0.wp.com) resizes on the fly with ?w=
-export const img = (url, w) => `${url}?w=${w}&ssl=1`;
+const UPLOADS = 'https://i0.wp.com/canadiansme.ca/wp-content/uploads/';
+export const full = (url) => (/^https?:/.test(url) ? url : UPLOADS + url);
+export const img = (url, w) => `${full(url)}?w=${w}&ssl=1`;
 
 export const srcset = (url, widths = [480, 800, 1200]) =>
   widths.map((w) => `${img(url, w)} ${w}w`).join(', ');

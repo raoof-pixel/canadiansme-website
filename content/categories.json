@@ -1,47 +1,97 @@
 [
-  {
-    "slug": "latest-news",
-    "name": "Latest news",
-    "description": "Announcements, results and partnerships from across the Canadian business landscape, updated through the day."
-  },
-  {
-    "slug": "small-business-leadership",
-    "name": "Leadership",
-    "description": "How Canadian founders and executives build teams, make decisions and lead through growth."
-  },
-  {
-    "slug": "interviews",
-    "name": "Interviews",
-    "description": "Conversations with the owners, founders and leaders shaping small business in Canada."
-  },
-  {
-    "slug": "technology",
-    "name": "Technology",
-    "description": "Practical guides to the software, AI and tools that help small businesses run better."
-  },
-  {
-    "slug": "women-entrepreneurship",
-    "name": "Women entrepreneurs",
-    "description": "Profiles of women founders across Canada, including our monthly Business Woman of the Month."
-  },
-  {
-    "slug": "finance-for-small-businesses",
-    "name": "Finance",
-    "description": "Cash flow, funding, payments and the economic picture for Canadian SMEs."
-  },
-  {
-    "slug": "marketing",
-    "name": "Marketing",
-    "description": "Agencies, strategies and campaigns that help Canadian brands find and keep customers."
-  },
-  {
-    "slug": "retail",
-    "name": "Retail",
-    "description": "Selling in stores and online: marketplaces, channels and the retailers growing across Canada."
-  },
-  {
-    "slug": "workplace",
-    "name": "Workplace",
-    "description": "Health, safety and the day-to-day running of a good place to work."
-  }
+ {
+  "slug": "latest-news",
+  "name": "Latest news",
+  "description": "Announcements, results and partnerships from across the Canadian business landscape, updated through the day."
+ },
+ {
+  "slug": "small-business-leadership",
+  "name": "Leadership",
+  "description": "How Canadian founders and executives build teams, make decisions and lead through growth."
+ },
+ {
+  "slug": "interviews",
+  "name": "Interviews",
+  "description": "Conversations with the owners, founders and leaders shaping small business in Canada."
+ },
+ {
+  "slug": "technology",
+  "name": "Technology",
+  "description": "Practical guides to the software, AI and tools that help small businesses run better."
+ },
+ {
+  "slug": "women-entrepreneurship",
+  "name": "Women entrepreneurs",
+  "description": "Profiles of women founders across Canada, including our monthly Business Woman of the Month."
+ },
+ {
+  "slug": "finance-for-small-businesses",
+  "name": "Finance",
+  "description": "Cash flow, funding, payments and the economic picture for Canadian SMEs."
+ },
+ {
+  "slug": "marketing",
+  "name": "Marketing",
+  "description": "Agencies, strategies and campaigns that help Canadian brands find and keep customers."
+ },
+ {
+  "slug": "retail",
+  "name": "Retail",
+  "description": "Selling in stores and online: marketplaces, channels and the retailers growing across Canada."
+ },
+ {
+  "slug": "workplace",
+  "name": "Workplace",
+  "description": "Health, safety and the day-to-day running of a good place to work."
+ },
+ {
+  "slug": "small-business",
+  "name": "Small business",
+  "description": "Guides, ideas and stories for starting and running a small business in Canada, from first idea to steady growth."
+ },
+ {
+  "slug": "entrepreneurship",
+  "name": "Entrepreneurs",
+  "description": "The founders building Canada's next generation of businesses, and what they learned along the way."
+ },
+ {
+  "slug": "artificial-intelligence",
+  "name": "Artificial intelligence",
+  "description": "How Canadian SMEs are putting AI to work, safely and practically."
+ },
+ {
+  "slug": "innovation",
+  "name": "Innovation",
+  "description": "New ideas, research and programs helping Canadian businesses compete."
+ },
+ {
+  "slug": "cybersecurity-for-small-businesses",
+  "name": "Cybersecurity",
+  "description": "Keeping small businesses, their data and their customers safe."
+ },
+ {
+  "slug": "economy",
+  "name": "Economy",
+  "description": "Trade, tariffs and the economic picture for Canadian small business."
+ },
+ {
+  "slug": "diversity-and-inclusion",
+  "name": "Diversity and inclusion",
+  "description": "Indigenous, 2SLGBTQ+, immigrant and diverse entrepreneurs across Canada."
+ },
+ {
+  "slug": "e-commerce",
+  "name": "E-commerce",
+  "description": "Selling online: marketplaces, platforms and the founders growing digital stores."
+ },
+ {
+  "slug": "sustainability",
+  "name": "How-to articles",
+  "description": "Practical, step-by-step advice for running a better small business."
+ },
+ {
+  "slug": "editors-pick",
+  "name": "Editor's pick",
+  "description": "Stories from the CanadianSME archive chosen by our editors."
+ }
 ]

@@ -1,0 +1,8 @@
+[
+  { "slug": "about-us", "title": "About CanadianSME", "description": "CanadianSME is the premier and most relevant platform for SMEs in Canada.", "file": "about-us" },
+  { "slug": "contact-us", "title": "Contact us", "description": "Questions, suggestions, advertising and partnerships: get in touch with CanadianSME.", "file": "contact-us" },
+  { "slug": "ups-small-business", "title": "UPS Small Business of the Day", "description": "CanadianSME and UPS highlight one Canadian small business every day.", "file": "ups-small-business" },
+  { "slug": "podcast", "title": "CanadianSME Small Business Podcast", "description": "Interviews with Canadian business experts and entrepreneurs.", "file": "podcast" },
+  { "slug": "subscription", "title": "Subscribe for free", "description": "Get CanadianSME Small Business Magazine free, every month.", "file": "subscription" },
+  { "slug": "start-up-stories", "title": "Share your journey with us", "description": "Tell your start-up story and reach a national audience of Canadian entrepreneurs.", "file": "start-up-stories" }
+]
