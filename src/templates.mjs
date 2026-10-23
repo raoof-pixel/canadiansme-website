@@ -254,7 +254,7 @@ ${image ? `<meta property="og:image" content="${img(image, 1200)}">\n<meta name=
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://i0.wp.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap">
-<link rel="stylesheet" href="${ctx.link('assets/styles.css')}">
+<link rel="stylesheet" href="${ctx.link('assets/styles.css')}?v=${ctx.version}">
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script>` : ''}
 </head>
 <body>
@@ -276,7 +276,7 @@ ${footer(ctx)}
   </div>
 </div>
 <script>window.__SEARCH_INDEX__=${JSON.stringify(ctx.searchIndex)};</script>
-<script src="${ctx.link('assets/app.js')}" defer></script>
+<script src="${ctx.link('assets/app.js')}?v=${ctx.version}" defer></script>
 </body>
 </html>`;
 

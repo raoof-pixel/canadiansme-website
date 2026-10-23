@@ -54,7 +54,9 @@ const now = new Date(posts[0].date);
 const searchIndex = posts.map((p) => ({ s: p.slug, t: p.title, c: categories[p.category].name }));
 
 const postsBySlug = Object.fromEntries(posts.map((p) => [p.slug, p]));
-const base = { site, categories, authors, posts, postsBySlug, byCategory, featured, latest: posts, now, searchIndex, home };
+// Changes on every build so browsers and CDNs never mix new pages with old CSS/JS.
+const version = Date.now().toString(36);
+const base = { version, site, categories, authors, posts, postsBySlug, byCategory, featured, latest: posts, now, searchIndex, home };
 
 async function emit(path, render) {
   const depth = path.split('/').length - 1;
