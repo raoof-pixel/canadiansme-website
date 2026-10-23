@@ -52,6 +52,47 @@
     play();
   });
 
+  // Magazine reader: opens Issuu issues on the page instead of a new tab.
+  const readerEl = $('[data-reader-modal]');
+  if (readerEl) {
+    const frame = $('[data-reader-frame]', readerEl);
+    const name = $('[data-reader-name]', readerEl);
+    const out = $('[data-reader-out]', readerEl);
+    let lastFocus = null;
+    const close = () => {
+      readerEl.classList.remove('is-open');
+      document.documentElement.style.overflow = '';
+      setTimeout(() => { readerEl.hidden = true; frame.src = 'about:blank'; }, reduce ? 0 : 420);
+      lastFocus?.focus?.();
+    };
+    document.addEventListener('click', (e) => {
+      const trigger = e.target.closest('[data-reader]');
+      if (!trigger || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      e.preventDefault();
+      lastFocus = trigger;
+      const doc = trigger.dataset.reader;
+      frame.src = `https://e.issuu.com/embed.html?d=${encodeURIComponent(doc)}&u=canadiansme`;
+      name.textContent = trigger.dataset.readerTitle || 'CanadianSME Small Business Magazine';
+      out.href = trigger.dataset.readerHref || `https://issuu.com/canadiansme/docs/${doc}`;
+      readerEl.hidden = false;
+      document.documentElement.style.overflow = 'hidden';
+      requestAnimationFrame(() => requestAnimationFrame(() => readerEl.classList.add('is-open')));
+      setTimeout(() => $('[data-reader-close]', readerEl).focus(), 80);
+    });
+    $('[data-reader-close]', readerEl).addEventListener('click', close);
+    readerEl.addEventListener('click', (e) => { if (e.target === readerEl) close(); });
+    readerEl.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  }
+
+  // Side sponsor rails step aside when the footer comes into view.
+  const railEls = $$('[data-rail]');
+  const footerEl = $('.footer');
+  if (railEls.length && footerEl && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => {
+      railEls.forEach((r) => r.classList.toggle('is-hidden', entry.isIntersecting));
+    }, { rootMargin: '0px 0px -40% 0px' }).observe(footerEl);
+  }
+
   // Masthead settles into a compact state once the page scrolls.
   const masthead = $('[data-masthead]');
   const progress = $('[data-progress]');

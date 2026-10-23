@@ -66,10 +66,16 @@ export const ad = (ctx, id, { variant = '' } = {}) => {
 };
 const shape = (a) => (a.w / a.h > 2.5 ? 'wide' : a.h > a.w * 1.5 ? 'tall' : 'box');
 
+// Opens an issue in the on-page reader; the Issuu link stays as the fallback.
+const readerAttrs = (m) => {
+  const doc = (m.href.split('/docs/')[1] || '').split(/[?#]/)[0];
+  return doc ? ` data-reader="${esc(doc)}" data-reader-title="${esc(`${m.title}, ${m.issue}`)}" data-reader-href="${m.href}"` : '';
+};
+
 const cover = (ctx, id, { eager = false, sizes = '(min-width: 1000px) 320px, 60vw' } = {}) => {
   const m = ctx.home.magazines.find((x) => x.id === id);
   if (!m) return '';
-  return `<a class="cover" href="${m.href}" target="_blank" rel="noopener" aria-label="Read ${esc(m.title)}, ${esc(m.issue)}">
+  return `<a class="cover" href="${m.href}" target="_blank" rel="noopener"${readerAttrs(m)} aria-label="Read ${esc(m.title)}, ${esc(m.issue)}">
       <img src="${img(m.cover, 640)}" srcset="${img(m.cover, 320)} 320w, ${img(m.cover, 640)} 640w, ${img(m.cover, 1000)} 1000w" sizes="${sizes}" alt="Cover of ${esc(m.title)}, ${esc(m.issue)}" width="1004" height="1300"${eager ? ' fetchpriority="high"' : ' loading="lazy"'}>
     </a>`;
 };
@@ -257,11 +263,30 @@ ${ticker(ctx)}
 <main id="main">
 ${body}
 </main>
+${rails(ctx)}
 ${footer(ctx)}
+<div class="reader" data-reader-modal hidden>
+  <div class="reader__panel" role="dialog" aria-modal="true" aria-labelledby="reader-title">
+    <div class="reader__bar">
+      <p id="reader-title" class="reader__title" data-reader-name>CanadianSME Small Business Magazine</p>
+      <a class="btn btn--ghost" href="https://issuu.com/canadiansme" target="_blank" rel="noopener" data-reader-out>Open in a new tab</a>
+      <button class="icon-btn" type="button" data-reader-close aria-label="Close magazine">${icon.close}</button>
+    </div>
+    <div class="reader__frame"><iframe data-reader-frame title="Magazine reader" allowfullscreen loading="lazy"></iframe></div>
+  </div>
+</div>
 <script>window.__SEARCH_INDEX__=${JSON.stringify(ctx.searchIndex)};</script>
 <script src="${ctx.link('assets/app.js')}" defer></script>
 </body>
 </html>`;
+
+// Floating sponsor rails for wide screens; hidden below 1800px.
+const rails = (ctx) => {
+  const r = ctx.home.rails;
+  if (!r) return '';
+  return `<div class="rail rail--left" data-rail>${ad(ctx, r.left, { variant: 'rail' })}</div>
+<div class="rail rail--right" data-rail>${ad(ctx, r.right, { variant: 'rail' })}</div>`;
+};
 
 // ---------- Homepage sections ----------
 
@@ -279,20 +304,41 @@ const sections = {
         .map((sl, i) => {
           const m = sl.magazine && ctx.home.magazines.find((x) => x.id === sl.magazine);
           const a = sl.ad && ctx.home.ads[sl.ad];
-          const link = m ? m.href : a.href;
           const label = m ? `${m.title}, ${m.issue}` : `Sponsored by ${a.sponsor}`;
           const art = m
-            ? cover(ctx, m.id, { eager: i === 0, sizes: '(min-width: 1000px) 360px, 70vw' })
+            ? cover(ctx, m.id, { eager: i === 0, sizes: '(min-width: 1000px) 340px, 70vw' })
             : `<a class="cover cover--ad" href="${a.href}" target="_blank" rel="sponsored noopener"><img src="${img(a.image, 900)}" alt="${esc(a.alt)}" width="${a.w}" height="${a.h}" loading="lazy"></a>`;
+          const primary = m
+            ? `<a class="btn btn--solid btn--lg" href="${m.href}" target="_blank" rel="noopener"${readerAttrs(m)}>${esc(sl.cta)}</a>`
+            : `<a class="btn btn--solid btn--lg" href="${a.href}" target="_blank" rel="sponsored noopener">${esc(sl.cta)}</a>`;
+          const highlights = (sl.highlights || [])
+            .map((h) => {
+              const inner = `${h.page ? `<span class="hero__page">p. ${esc(h.page)}</span>` : '<span class="hero__page hero__page--dot" aria-hidden="true"></span>'}<span>${esc(h.title)}</span>`;
+              return `<li>${h.post ? `<a href="${ctx.link(`${h.post}/`)}">${inner}</a>` : `<span class="hero__hl">${inner}</span>`}</li>`;
+            })
+            .join('');
+          const past = (sl.past || [])
+            .map((id) => {
+              const pm = ctx.home.magazines.find((x) => x.id === id);
+              return `<a class="hero__past-item" href="${pm.href}" target="_blank" rel="noopener"${readerAttrs(pm)}><img src="${img(pm.cover, 160)}" alt="" width="1004" height="1300" loading="lazy"><span>${esc(pm.issue)}</span></a>`;
+            })
+            .join('');
           return `
         <article class="hero__slide${i === 0 ? ' is-active' : ''}" data-slide aria-roledescription="slide" aria-label="${i + 1} of ${s.slides.length}"${i === 0 ? '' : ' aria-hidden="true"'}>
           <div class="hero__copy">
             <p class="hero__issue">${esc(label)}</p>
             <h1 class="hero__title">${esc(sl.heading)}</h1>
             <p class="hero__text">${esc(sl.text)}</p>
-            <a class="btn btn--solid btn--lg" href="${link}" target="_blank" rel="${a ? 'sponsored ' : ''}noopener"${i === 0 ? '' : ' tabindex="-1"'}>${esc(sl.cta)}</a>
+            <div class="btn-row">
+              ${primary}
+              ${m ? `<a class="btn btn--ghost btn--lg" href="${ctx.link('subscription/')}">Subscribe free</a>` : ''}
+            </div>
+            ${highlights ? `<div class="hero__in"><p class="hero__in-title">${m ? 'In this issue' : 'Why CanadianSME readers choose UPS'}</p><ul class="hero__list">${highlights}</ul></div>` : ''}
           </div>
-          <div class="hero__art">${art}</div>
+          <div class="hero__art">
+            ${art}
+            ${past ? `<div class="hero__past"><p>Past issues</p><div>${past}</div></div>` : ''}
+          </div>
         </article>`;
         })
         .join('')}
@@ -337,7 +383,7 @@ const sections = {
         ${meta(ctx, p)}
         <div class="btn-row">
           <a class="btn btn--solid" href="${ctx.link(`${p.slug}/`)}">Read the article</a>
-          ${s.magazine ? `<a class="btn btn--ghost" href="${ctx.home.magazines.find((m) => m.id === s.magazine).href}" target="_blank" rel="noopener">Read the issue</a>` : ''}
+          ${s.magazine ? (() => { const m = ctx.home.magazines.find((x) => x.id === s.magazine); return `<a class="btn btn--ghost" href="${m.href}" target="_blank" rel="noopener"${readerAttrs(m)}>Read the issue</a>`; })() : ''}
         </div>
       </div>
       ${s.magazine ? `<div class="feature__cover">${cover(ctx, s.magazine, { sizes: '200px' })}</div>` : ''}
