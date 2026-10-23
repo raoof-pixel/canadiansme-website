@@ -4,14 +4,23 @@
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Hide images that fail to load; their soft placeholder background shows instead.
-  const markMissing = (img) => img.classList.add('is-missing');
+  // Images come from WordPress's image CDN (i0.wp.com). If the CDN fails to deliver
+  // one, load the original from canadiansme.ca instead; only hide it if that fails too.
+  const fromOrigin = (src) => src.replace('https://i0.wp.com/', 'https://').split('?')[0];
+  const handleError = (img) => {
+    if (!img.dataset.retried && img.src.includes('i0.wp.com/')) {
+      img.dataset.retried = '1';
+      img.removeAttribute('srcset');
+      img.src = fromOrigin(img.src);
+      return;
+    }
+    img.classList.add('is-missing');
+  };
   $$('img').forEach((img) => {
-    // A lazy image that hasn't started loading also reports complete with no size,
-    // so only treat eager images that way; everything else waits for a real error.
-    if (img.loading !== 'lazy' && img.complete && img.naturalWidth === 0) markMissing(img);
-    img.addEventListener('error', () => markMissing(img), { once: true });
+    img.addEventListener('error', () => handleError(img));
     img.addEventListener('load', () => img.classList.remove('is-missing'));
+    // Eager images may already have failed before this script ran.
+    if (img.loading !== 'lazy' && img.complete && img.naturalWidth === 0) handleError(img);
   });
 
   // Magazine slider: soft crossfade, auto-advance, pause on hover/focus, swipe.
