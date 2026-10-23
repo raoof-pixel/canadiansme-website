@@ -346,7 +346,8 @@ a.tag:hover { color: var(--accent-deep); }
 .post__hero { position: relative; display: flex; align-items: flex-end; min-height: min(640px, 78vh); background: var(--navy); color: #fff; overflow: hidden; }
 .post__media { position: absolute; inset: 0; }
 .post__media img { width: 100%; height: 100%; object-fit: cover; }
-.post__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, var(--navy) 0%, rgba(2, 10, 28, 0.75) 35%, rgba(2, 10, 28, 0.15) 75%); }
+.post__media img { opacity: 0.6; }
+.post__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, var(--navy) 0%, rgba(2, 10, 28, 0.88) 38%, rgba(2, 10, 28, 0.35) 80%), linear-gradient(90deg, rgba(2, 10, 28, 0.85) 0%, rgba(2, 10, 28, 0.2) 65%); }
 .post__head { position: relative; display: grid; gap: 18px; justify-items: start; padding-block: 140px 48px; }
 .post__title { max-width: 920px; font-size: clamp(32px, 4vw, 54px); line-height: 1.12; letter-spacing: -0.035em; text-wrap: balance; }
 .crumbs { display: flex; align-items: center; gap: 6px; font-size: 14px; color: var(--on-dark); }
