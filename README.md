@@ -2,7 +2,7 @@
 
 A new front end for [canadiansme.ca](https://canadiansme.ca), built to replace the WordPress theme. Layout inspired by the Presspoint news template on Webflow, redesigned for CanadianSME.
 
-This is a **preview build with sample content**: about 40 recent articles pulled read-only from the live WordPress site (5 with full text). The live site has not been changed.
+This is a **preview build** that mirrors the live homepage: the same sections, articles, magazine issues and sponsor ads, plus the About, Contact, UPS Small Business, Podcast, Subscribe and Start-up stories pages. About 95 articles were pulled read-only from WordPress (9 with full text). The live site has not been changed.
 
 ## Run it
 
@@ -21,7 +21,10 @@ npm run build      # builds the site into dist/
 | `content/articles/*.html` | Full article bodies (referenced by `body` in posts.json) |
 | `content/categories.json` | Sections and their descriptions |
 | `content/authors.json` | Author names, roles and bios |
-| `content/site.json` | Site name, navigation, social links |
+| `content/site.json` | Site name, navigation, contact details, social links |
+| `content/homepage.json` | Homepage sections in order, magazine issues, sponsor ads and partners |
+| `content/pages.json`, `content/pages/*.html` | About, Contact, UPS Small Business, Podcast, Subscribe, Start-up stories |
+| `content/posts-more.json`, `content/authors-more.json` | Articles and authors used on the homepage |
 | `src/templates.mjs` | Page templates: home, article, category, author, 404 |
 | `public/styles.css` | Design system and all styles |
 | `public/app.js` | Search, mobile menu, reading progress, sticky header |

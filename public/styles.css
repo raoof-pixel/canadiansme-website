@@ -653,3 +653,4 @@ img.is-missing { opacity: 0; }
 @media (prefers-reduced-motion: reduce) {
   .hero__slide .cover img { transform: none !important; opacity: 1 !important; }
 }
+.page-body .partners { grid-template-columns: minmax(0, 1fr); }
