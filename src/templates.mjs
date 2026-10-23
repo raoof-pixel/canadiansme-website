@@ -284,8 +284,25 @@ ${footer(ctx)}
 const rails = (ctx) => {
   const r = ctx.home.rails;
   if (!r) return '';
-  return `<div class="rail rail--left" data-rail>${ad(ctx, r.left, { variant: 'rail' })}</div>
-<div class="rail rail--right" data-rail>${ad(ctx, r.right, { variant: 'rail' })}</div>`;
+  const m = ctx.home.magazines.find((x) => x.id === r.left.magazine);
+  return `<aside class="rail rail--left" data-rail aria-label="Latest magazine issue">
+  <div class="rail-card rail-card--mag">
+    <p class="rail-card__eyebrow">Latest issue</p>
+    ${cover(ctx, m.id, { sizes: '180px' })}
+    <p class="rail-card__title">${esc(m.issue)}</p>
+    <a class="btn btn--solid btn--block" href="${m.href}" target="_blank" rel="noopener"${readerAttrs(m)}>Read it free</a>
+  </div>
+</aside>
+<aside class="rail rail--right" data-rail aria-labelledby="rail-sub-title">
+  <form class="rail-card rail-card--sub" action="${ctx.link('subscription/')}" method="get">
+    <h2 id="rail-sub-title">Subscribe to CanadianSME for free</h2>
+    <p>Each new issue, event updates and business insights in your inbox.</p>
+    <div class="field"><label for="rail-first">First name</label><input id="rail-first" name="first" autocomplete="given-name" required></div>
+    <div class="field"><label for="rail-email">Email</label><input id="rail-email" name="email" type="email" autocomplete="email" required></div>
+    <label class="check"><input type="checkbox" required> I agree to receive emails from CanadianSME.</label>
+    <button class="btn btn--solid btn--block" type="submit">Subscribe free</button>
+  </form>
+</aside>`;
 };
 
 // ---------- Homepage sections ----------
