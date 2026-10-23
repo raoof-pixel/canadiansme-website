@@ -45,10 +45,13 @@
     $('[data-prev]', root)?.addEventListener('click', () => { show(index - 1); play(); });
     $('[data-next]', root)?.addEventListener('click', () => { show(index + 1); play(); });
     dots.forEach((d) => d.addEventListener('click', () => { show(Number(d.dataset.dot)); play(); }));
-    root.addEventListener('mouseenter', stop);
-    root.addEventListener('mouseleave', play);
-    root.addEventListener('focusin', stop);
-    root.addEventListener('focusout', play);
+    const pause = () => { stop(); root.classList.add('is-paused'); };
+    const resume = () => { root.classList.remove('is-paused'); play(); };
+    root.addEventListener('mouseenter', pause);
+    root.addEventListener('mouseleave', resume);
+    root.addEventListener('focusin', pause);
+    root.addEventListener('focusout', resume);
+    if (reduce) root.classList.add('is-paused');
     let x0 = null;
     root.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
     root.addEventListener('touchend', (e) => {
@@ -59,6 +62,61 @@
     });
     document.addEventListener('visibilitychange', () => (document.hidden ? stop() : play()));
     play();
+  });
+
+  // Insights: topic filters, a quick search and "show more".
+  $$('[data-insights]').forEach((root) => {
+    const grid = $('[data-insights-grid]', root);
+    const cards = $$('[data-cat]', grid);
+    const step = Number(grid.dataset.show) || 9;
+    const input = $('[data-insights-search]', root);
+    const empty = $('[data-insights-empty]', root);
+    const more = $('[data-insights-more]', root);
+    const filters = $$('[data-filter]', root);
+    let cat = 'all';
+    let limit = step;
+    const apply = (animate) => {
+      const words = (input?.value || '').trim().toLowerCase().split(/\s+/).filter(Boolean);
+      const matches = cards.filter((c) => (cat === 'all' || c.dataset.cat === cat) && words.every((w) => c.dataset.text.includes(w)));
+      cards.forEach((c) => {
+        const i = matches.indexOf(c);
+        const wasShown = !c.classList.contains('is-filtered') && !c.classList.contains('is-folded');
+        c.classList.toggle('is-filtered', i === -1);
+        c.classList.toggle('is-folded', i >= limit);
+        const shown = i !== -1 && i < limit;
+        c.classList.toggle('is-new', Boolean(animate && shown && !wasShown));
+      });
+      empty.hidden = matches.length > 0;
+      more.parentElement.hidden = matches.length <= limit;
+    };
+    filters.forEach((b) => b.addEventListener('click', () => {
+      cat = b.dataset.filter;
+      limit = step;
+      filters.forEach((f) => { const on = f === b; f.classList.toggle('is-on', on); f.setAttribute('aria-pressed', String(on)); });
+      cards.forEach((c) => c.classList.add('is-folded'));
+      apply(true);
+    }));
+    input?.addEventListener('input', () => { limit = step; apply(false); });
+    more.addEventListener('click', () => { limit += step; apply(true); });
+    apply(false);
+  });
+
+  // Carousels: arrow buttons scroll one card; buttons dim at the ends.
+  $$('[data-carousel]').forEach((root) => {
+    const track = $('[data-car-track]', root);
+    const prev = $('[data-car-prev]', root);
+    const next = $('[data-car-next]', root);
+    if (!track) return;
+    const stepBy = () => (track.firstElementChild?.getBoundingClientRect().width || 300) + 24;
+    const update = () => {
+      prev.disabled = track.scrollLeft < 4;
+      next.disabled = track.scrollLeft + track.clientWidth > track.scrollWidth - 4;
+    };
+    prev?.addEventListener('click', () => track.scrollBy({ left: -stepBy(), behavior: reduce ? 'auto' : 'smooth' }));
+    next?.addEventListener('click', () => track.scrollBy({ left: stepBy(), behavior: reduce ? 'auto' : 'smooth' }));
+    track.addEventListener('scroll', update, { passive: true });
+    addEventListener('resize', update);
+    update();
   });
 
   // Magazine reader: opens Issuu issues on the page instead of a new tab.
