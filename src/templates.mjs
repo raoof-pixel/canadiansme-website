@@ -258,8 +258,7 @@ const footer = (ctx) => `
       </div>
       <nav class="footer__nav" aria-label="Sections">${Object.values(ctx.categories).slice(0, 12).map((c) => `<a href="${ctx.link(`category/${c.slug}/`)}">${esc(c.name)}</a>`).join('')}</nav>
       <nav class="footer__nav footer__nav--sub" aria-label="CanadianSME">
-        ${ctx.site.utilityLinks.map((l) => `<a href="${href(ctx, l.href)}"${ext(l.href)}>${esc(l.label)}</a>`).join('')}
-        ${ctx.site.footerLinks.map((l) => `<a href="${href(ctx, l.href)}">${esc(l.label)}</a>`).join('')}
+        ${[...ctx.site.utilityLinks, ...ctx.site.footerLinks].filter((l, i, all) => all.findIndex((x) => x.label === l.label) === i).map((l) => `<a href="${href(ctx, l.href)}"${ext(l.href)}>${esc(l.label)}</a>`).join('')}
       </nav>
       <div class="footer__legal">
         <p>© ${ctx.now.getFullYear()} CanadianSME Magazine<span class="bar" aria-hidden="true"></span>All rights reserved<span class="bar" aria-hidden="true"></span>${esc(ctx.site.contact.company)}, ${esc(ctx.site.contact.address)}<span class="bar" aria-hidden="true"></span>${ctx.site.contact.phones.map(esc).join(', ')}</p>
