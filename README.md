@@ -50,3 +50,20 @@ npm run build      # builds the site into dist/
 2. Add the admin panel (planned: Payload CMS), so the team can write and publish articles. The templates read from one content layer, so the CMS replaces the JSON files without touching the design.
 3. Import all ~8,750 posts, authors and media from WordPress.
 4. Host (for example Vercel or Cloudflare Pages) and switch the domain.
+
+## Live content from the CMS
+
+Set `CMS_URL` (e.g. `https://canadiansme-cms.vercel.app`) and the build reads published articles,
+categories and authors from the CanadianSME CMS instead of `content/*.json`:
+
+- `CMS_URL` – the CMS address. Without it the site builds from the JSON files as before.
+- `CMS_MAX_POSTS` – newest N articles to build (default 1500).
+- `SITE_NOINDEX=1` – keeps a test copy out of Google (robots.txt disallows everything).
+
+`content/homepage.json` still controls the homepage layout and hand-picked stories; the featured
+row, the "Around CanadianSME" sidebar and category carousels fill themselves with the newest
+articles (see `src/homepage.mjs`). Static pages (About, Contact, …) still come from `content/pages`.
+
+The build also writes `/_preview/`, a template the CMS uses to show drafts in the site design.
+On Vercel, a Deploy Hook set as `FRONTEND_REVALIDATE_URL` in the CMS rebuilds the site whenever
+an article is published, changed or unpublished.

@@ -304,7 +304,7 @@ ${body}
 ${rails(ctx)}
 ${footer(ctx)}
 ${readerModal()}
-<script>window.__SEARCH_INDEX__=${JSON.stringify(ctx.searchIndex)};</script>
+<script src="${ctx.link('assets/search-index.js')}?v=${ctx.version}" defer></script>
 <script src="${ctx.link('assets/app.js')}?v=${ctx.version}" defer></script>
 </body>
 </html>`;
@@ -632,7 +632,8 @@ export const article = (ctx, post, html) => {
 
 const listing = (ctx, { heading, intro, posts, active, canonical, title, extraHead = '' }) => {
   const vt = makeVT();
-  const [first, ...rest] = posts;
+  // Long archives (thousands of articles) show the newest ones.
+  const [first, ...rest] = posts.slice(0, 60);
   const body = `
   <header class="wrap listing__head">
     ${extraHead}
@@ -695,6 +696,34 @@ export const staticPage = (ctx, pg, html) => {
   </header>
   <div class="wrap page-body">${out}</div>`;
   return page(ctx, { title: `${pg.title} | ${ctx.site.fullName}`, description: pg.description, canonical: `${ctx.site.url}/${pg.slug}/`, body });
+};
+
+// ---------- Draft preview ----------
+
+// An article page with placeholders (%%TITLE%% etc.). The CMS fills it in to show a draft in the
+// real site design before it is published. Never linked from the site.
+export const PREVIEW_IMAGE = 'https://preview.invalid/%%IMAGE%%';
+export const previewTemplate = (ctx) => {
+  const cat = { slug: '%%CATSLUG%%', name: '%%CATEGORY%%', description: '' };
+  const author = { slug: '%%AUTHORSLUG%%', name: '%%AUTHOR%%', role: '', bio: '' };
+  const post = {
+    id: 0,
+    slug: '%%SLUG%%',
+    title: '%%TITLE%%',
+    excerpt: '%%EXCERPT%%',
+    date: '2000-01-01T00:00:00',
+    category: cat.slug,
+    author: author.slug,
+    image: PREVIEW_IMAGE,
+    readingTime: '%%READ%%',
+  };
+  const pctx = {
+    ...ctx,
+    categories: { ...ctx.categories, [cat.slug]: cat },
+    authors: { ...ctx.authors, [author.slug]: author },
+    byCategory: { ...ctx.byCategory, [cat.slug]: [] },
+  };
+  return article(pctx, post, '%%BODY%%');
 };
 
 export const notFound = (ctx) =>

@@ -6,6 +6,8 @@ import { existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { makeLinker, readingTime } from './src/lib.mjs';
+import { loadFromCMS } from './src/cms.mjs';
+import { refreshHomepage } from './src/homepage.mjs';
 import * as t from './src/templates.mjs';
 
 const root = dirname(fileURLToPath(import.meta.url));
@@ -15,11 +17,26 @@ const indexLinks = process.argv.includes('--index');
 const readJSON = async (p) => JSON.parse(await readFile(join(root, p), 'utf8'));
 
 const site = await readJSON('content/site.json');
-const categoriesList = await readJSON('content/categories.json');
-const authorsList = [...(await readJSON('content/authors.json')), ...(await readJSON('content/authors-more.json'))];
-const rawPosts = [...(await readJSON('content/posts.json')), ...(await readJSON('content/posts-more.json'))];
+let categoriesList = await readJSON('content/categories.json');
+let authorsList = [...(await readJSON('content/authors.json')), ...(await readJSON('content/authors-more.json'))];
+let rawPosts = [...(await readJSON('content/posts.json')), ...(await readJSON('content/posts-more.json'))];
 const home = await readJSON('content/homepage.json');
 const pages = await readJSON('content/pages.json');
+
+// Live content from the CMS when CMS_URL is set (see src/cms.mjs); otherwise the JSON files above.
+const CMS_URL = process.env.CMS_URL;
+let cmsBodies = null;
+if (CMS_URL) {
+  const cms = await loadFromCMS({
+    base: CMS_URL,
+    localCategories: categoriesList,
+    localAuthors: authorsList,
+    maxPosts: Number(process.env.CMS_MAX_POSTS) || 1500,
+  });
+  ({ categoriesList, authorsList } = cms);
+  rawPosts = cms.posts;
+  cmsBodies = cms.bodies;
+}
 
 const seenSlugs = new Set();
 for (const p of rawPosts) {
@@ -37,13 +54,15 @@ for (const [i, p] of rawPosts.entries()) {
   if (!categories[p.category]) throw new Error(`Unknown category "${p.category}" on ${p.slug}`);
   if (!authors[p.author]) throw new Error(`Unknown author "${p.author}" on ${p.slug}`);
   let html = '';
-  if (p.body) {
+  if (cmsBodies) {
+    html = cmsBodies[p.slug] || '';
+  } else if (p.body) {
     const file = join(root, 'content/articles', `${p.body}.html`);
     if (!existsSync(file)) throw new Error(`Missing body file ${file}`);
     html = await readFile(file, 'utf8');
   }
   bodies[p.slug] = html;
-  posts.push({ ...p, id: i + 1, readingTime: html ? readingTime(html) : 2 });
+  posts.push({ ...p, id: i + 1, readingTime: p.readingTime || (html ? readingTime(html) : 2) });
 }
 posts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -54,6 +73,7 @@ const now = new Date(posts[0].date);
 const searchIndex = posts.map((p) => ({ s: p.slug, t: p.title, c: categories[p.category].name }));
 
 const postsBySlug = Object.fromEntries(posts.map((p) => [p.slug, p]));
+if (CMS_URL) refreshHomepage(home, { posts, postsBySlug, byCategory, featured });
 // Changes on every build so browsers and CDNs never mix new pages with old CSS/JS.
 const version = Date.now().toString(36);
 const base = { version, site, categories, authors, posts, postsBySlug, byCategory, featured, latest: posts, now, searchIndex, home };
@@ -78,6 +98,11 @@ for (const pg of pages) {
   await emit(`${pg.slug}/index.html`, (ctx) => t.staticPage(ctx, pg, html));
 }
 await emit('404.html', (ctx) => t.notFound(ctx));
+// Template the CMS fills in to show unpublished drafts in the real site design (Preview button).
+await emit('_preview/index.html', (ctx) => t.previewTemplate(ctx));
+// Search index as its own file (cached once) instead of inside every page.
+await mkdir(join(out, 'assets'), { recursive: true });
+await writeFile(join(out, 'assets', 'search-index.js'), `window.__SEARCH_INDEX__=${JSON.stringify(searchIndex)};`);
 
 // SEO files
 const urls = [
@@ -91,7 +116,11 @@ await writeFile(
   join(out, 'sitemap.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>${u}</loc></url>`).join('\n')}\n</urlset>\n`
 );
-await writeFile(join(out, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${site.url}/sitemap.xml\n`);
+// SITE_NOINDEX=1 keeps test copies of the site out of Google.
+await writeFile(
+  join(out, 'robots.txt'),
+  process.env.SITE_NOINDEX ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\n\nSitemap: ${site.url}/sitemap.xml\n`
+);
 
 await cp(join(root, 'public'), join(out, 'assets'), { recursive: true });
 
