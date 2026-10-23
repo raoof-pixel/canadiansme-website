@@ -4,6 +4,13 @@
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Hide images that fail to load; their soft placeholder background shows instead.
+  const markMissing = (img) => img.classList.add('is-missing');
+  $$('img').forEach((img) => {
+    if (img.complete && img.naturalWidth === 0) markMissing(img);
+    else img.addEventListener('error', () => markMissing(img), { once: true });
+  });
+
   // Masthead settles into a compact state once the page scrolls.
   const masthead = $('[data-masthead]');
   const progress = $('[data-progress]');
