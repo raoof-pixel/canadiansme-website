@@ -1,0 +1,28 @@
+{
+  "name": "CanadianSME",
+  "fullName": "CanadianSME Small Business Magazine",
+  "tagline": "News, ideas and stories for Canada's small and medium-sized businesses.",
+  "url": "https://canadiansme.ca",
+  "locale": "en-CA",
+  "nav": [
+    "latest-news",
+    "small-business-leadership",
+    "interviews",
+    "technology",
+    "women-entrepreneurship",
+    "finance-for-small-businesses",
+    "marketing"
+  ],
+  "utilityLinks": [
+    { "label": "Magazine", "href": "https://canadiansme.ca/magazine/" },
+    { "label": "Podcast", "href": "https://canadiansme.ca/podcast/" },
+    { "label": "Events", "href": "https://canadiansme.ca/category/events/" },
+    { "label": "Contact", "href": "https://canadiansme.ca/contact-us/" }
+  ],
+  "social": [
+    { "label": "X", "href": "https://x.com/canadian_sme" },
+    { "label": "LinkedIn", "href": "https://www.linkedin.com/company/canadiansme/" },
+    { "label": "Instagram", "href": "https://www.instagram.com/canadiansme/" },
+    { "label": "Facebook", "href": "https://www.facebook.com/CanadianSME/" }
+  ]
+}

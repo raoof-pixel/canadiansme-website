@@ -1,0 +1,83 @@
+// Builds the static site into ./dist from the files in ./content.
+// Usage: node build.mjs            (pretty links: /slug/)
+//        node build.mjs --index     (links end in index.html, for file previews)
+import { readFile, writeFile, mkdir, rm, cp, readdir } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { makeLinker, readingTime } from './src/lib.mjs';
+import * as t from './src/templates.mjs';
+
+const root = dirname(fileURLToPath(import.meta.url));
+const out = join(root, 'dist');
+const indexLinks = process.argv.includes('--index');
+
+const readJSON = async (p) => JSON.parse(await readFile(join(root, p), 'utf8'));
+
+const site = await readJSON('content/site.json');
+const categoriesList = await readJSON('content/categories.json');
+const authorsList = await readJSON('content/authors.json');
+const rawPosts = await readJSON('content/posts.json');
+
+const categories = Object.fromEntries(categoriesList.map((c) => [c.slug, c]));
+const authors = Object.fromEntries(authorsList.map((a) => [a.slug, a]));
+
+// Load bodies and sort newest first.
+const bodies = {};
+const posts = [];
+for (const [i, p] of rawPosts.entries()) {
+  if (!categories[p.category]) throw new Error(`Unknown category "${p.category}" on ${p.slug}`);
+  if (!authors[p.author]) throw new Error(`Unknown author "${p.author}" on ${p.slug}`);
+  let html = '';
+  if (p.body) {
+    const file = join(root, 'content/articles', `${p.body}.html`);
+    if (!existsSync(file)) throw new Error(`Missing body file ${file}`);
+    html = await readFile(file, 'utf8');
+  }
+  bodies[p.slug] = html;
+  posts.push({ ...p, id: i + 1, readingTime: html ? readingTime(html) : 2 });
+}
+posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+const byCategory = Object.fromEntries(categoriesList.map((c) => [c.slug, posts.filter((p) => p.category === c.slug)]));
+const featured = [...posts.filter((p) => p.featured), ...posts.filter((p) => !p.featured && p.category !== 'latest-news')];
+const now = new Date(posts[0].date);
+
+const searchIndex = posts.map((p) => ({ s: p.slug, t: p.title, c: categories[p.category].name }));
+
+const base = { site, categories, authors, posts, byCategory, featured, latest: posts, now, searchIndex };
+
+async function emit(path, render) {
+  const depth = path.split('/').length - 1;
+  const ctx = { ...base, link: makeLinker(depth, { indexLinks }), depth };
+  const file = join(out, path);
+  await mkdir(dirname(file), { recursive: true });
+  await writeFile(file, render(ctx));
+}
+
+await rm(out, { recursive: true, force: true });
+await mkdir(out, { recursive: true });
+
+await emit('index.html', (ctx) => t.home(ctx));
+for (const p of posts) await emit(`${p.slug}/index.html`, (ctx) => t.article(ctx, p, bodies[p.slug]));
+for (const c of categoriesList) await emit(`category/${c.slug}/index.html`, (ctx) => t.category(ctx, c));
+for (const a of authorsList) await emit(`author/${a.slug}/index.html`, (ctx) => t.authorPage(ctx, a));
+await emit('404.html', (ctx) => t.notFound(ctx));
+
+// SEO files
+const urls = [
+  `${site.url}/`,
+  ...posts.map((p) => `${site.url}/${p.slug}/`),
+  ...categoriesList.map((c) => `${site.url}/category/${c.slug}/`),
+  ...authorsList.map((a) => `${site.url}/author/${a.slug}/`),
+];
+await writeFile(
+  join(out, 'sitemap.xml'),
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `  <url><loc>${u}</loc></url>`).join('\n')}\n</urlset>\n`
+);
+await writeFile(join(out, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${site.url}/sitemap.xml\n`);
+
+await cp(join(root, 'public'), join(out, 'assets'), { recursive: true });
+
+const count = (await readdir(out, { recursive: true })).filter((f) => f.endsWith('.html')).length;
+console.log(`Built ${count} pages into dist/${indexLinks ? ' (index.html links)' : ''}`);

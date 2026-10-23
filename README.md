@@ -1,1 +1,49 @@
-# canadiansme-website
+# CanadianSME website
+
+A new front end for [canadiansme.ca](https://canadiansme.ca), built to replace the WordPress theme. Layout inspired by the Presspoint news template on Webflow, redesigned for CanadianSME.
+
+This is a **preview build with sample content**: about 40 recent articles pulled read-only from the live WordPress site (5 with full text). The live site has not been changed.
+
+## Run it
+
+Needs Node 20 or newer. No packages to install.
+
+```bash
+npm run dev        # builds and serves at http://localhost:4321
+npm run build      # builds the site into dist/
+```
+
+## What's here
+
+| Path | What it is |
+| --- | --- |
+| `content/posts.json` | Articles: title, slug, date, category, author, image, excerpt |
+| `content/articles/*.html` | Full article bodies (referenced by `body` in posts.json) |
+| `content/categories.json` | Sections and their descriptions |
+| `content/authors.json` | Author names, roles and bios |
+| `content/site.json` | Site name, navigation, social links |
+| `src/templates.mjs` | Page templates: home, article, category, author, 404 |
+| `public/styles.css` | Design system and all styles |
+| `public/app.js` | Search, mobile menu, reading progress, sticky header |
+| `build.mjs` | Turns the content folder into static pages in `dist/` |
+
+## Pages
+
+- **Home**: lead story with top stories, today's business news, interviews, section blocks (Leadership, Finance, Technology, Marketing), women entrepreneurs, newsletter.
+- **Article**: `/<slug>/`, the same URL as WordPress, so no redirects are needed when we switch.
+- **Section**: `/category/<slug>/`, matching WordPress category URLs.
+- **Author**: `/author/<slug>/`, indexable author pages.
+- Search (press `/`), sitemap.xml, robots.txt, NewsArticle schema, Open Graph and large Twitter cards on every article.
+
+## Design
+
+- Colours: ink navy `#15233B`, glacier `#F2F5F8`, maple red `#C8102E` (used sparingly).
+- Type: Newsreader for headlines and reading, Hanken Grotesk for the interface.
+- Motion: smooth cross-page transitions where article images glide into the article page (Chrome, Edge, Safari 18+), soft hover easing, reduced-motion respected.
+
+## Next steps
+
+1. Review the design and pick any changes.
+2. Add the admin panel (planned: Payload CMS), so the team can write and publish articles. The templates read from one content layer, so the CMS replaces the JSON files without touching the design.
+3. Import all ~8,750 posts, authors and media from WordPress.
+4. Host (for example Vercel or Cloudflare Pages) and switch the domain.

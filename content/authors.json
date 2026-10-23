@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "canadiansme",
+    "name": "CanadianSME Newsroom",
+    "role": "Editorial team",
+    "bio": "The CanadianSME editorial team covers news, research and stories that matter to Canada's small and medium-sized enterprises."
+  },
+  {
+    "slug": "sk-uddin",
+    "name": "SK Uddin",
+    "role": "Founder, CanadianSME Small Business Magazine",
+    "bio": "SK Uddin founded CanadianSME Small Business Magazine and organizes the annual Small Business Summit and Small Business Expo. He writes about business tools, trends and the people behind Canadian success stories."
+  },
+  {
+    "slug": "maheen-bari",
+    "name": "Maheen Bari",
+    "role": "Client Manager, CanadianSME",
+    "bio": "Maheen conducts interviews, coordinates events and works with business experts across Canada, bringing a hands-on view of what running a small business looks like day to day."
+  },
+  {
+    "slug": "kal-k-sahota",
+    "name": "Kal K. Sahota",
+    "role": "Chief Growth Officer, Intranet Connections",
+    "bio": "Kal leads growth strategy at Intranet Connections and has more than three decades of leadership experience across SaaS, financial services and organizational transformation."
+  },
+  {
+    "slug": "corey-hall",
+    "name": "Corey Hall",
+    "role": "Founder and CEO, Pro-Core Foundation Repair Systems",
+    "bio": "Corey has more than 25 years of construction experience and 18 years as a business owner, building Pro-Core into one of its region's most established foundation repair firms."
+  }
+]

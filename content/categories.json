@@ -1,0 +1,47 @@
+[
+  {
+    "slug": "latest-news",
+    "name": "Latest news",
+    "description": "Announcements, results and partnerships from across the Canadian business landscape, updated through the day."
+  },
+  {
+    "slug": "small-business-leadership",
+    "name": "Leadership",
+    "description": "How Canadian founders and executives build teams, make decisions and lead through growth."
+  },
+  {
+    "slug": "interviews",
+    "name": "Interviews",
+    "description": "Conversations with the owners, founders and leaders shaping small business in Canada."
+  },
+  {
+    "slug": "technology",
+    "name": "Technology",
+    "description": "Practical guides to the software, AI and tools that help small businesses run better."
+  },
+  {
+    "slug": "women-entrepreneurship",
+    "name": "Women entrepreneurs",
+    "description": "Profiles of women founders across Canada, including our monthly Business Woman of the Month."
+  },
+  {
+    "slug": "finance-for-small-businesses",
+    "name": "Finance",
+    "description": "Cash flow, funding, payments and the economic picture for Canadian SMEs."
+  },
+  {
+    "slug": "marketing",
+    "name": "Marketing",
+    "description": "Agencies, strategies and campaigns that help Canadian brands find and keep customers."
+  },
+  {
+    "slug": "retail",
+    "name": "Retail",
+    "description": "Selling in stores and online: marketplaces, channels and the retailers growing across Canada."
+  },
+  {
+    "slug": "workplace",
+    "name": "Workplace",
+    "description": "Health, safety and the day-to-day running of a good place to work."
+  }
+]
