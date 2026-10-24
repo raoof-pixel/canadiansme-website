@@ -109,8 +109,8 @@
     if (!track) return;
     const stepBy = () => (track.firstElementChild?.getBoundingClientRect().width || 300) + 24;
     const update = () => {
-      prev.disabled = track.scrollLeft < 4;
-      next.disabled = track.scrollLeft + track.clientWidth > track.scrollWidth - 4;
+      prev.disabled = track.scrollLeft < 10;
+      next.disabled = track.scrollLeft + track.clientWidth > track.scrollWidth - 10;
     };
     prev?.addEventListener('click', () => track.scrollBy({ left: -stepBy(), behavior: reduce ? 'auto' : 'smooth' }));
     next?.addEventListener('click', () => track.scrollBy({ left: stepBy(), behavior: reduce ? 'auto' : 'smooth' }));
@@ -149,6 +149,24 @@
     $('[data-reader-close]', readerEl).addEventListener('click', close);
     readerEl.addEventListener('click', (e) => { if (e.target === readerEl) close(); });
     readerEl.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  }
+
+  // Cards and panels fade up softly as they scroll into view, a few at a time.
+  if ('IntersectionObserver' in window && !reduce) {
+    const items = $$('.card, .row, .portrait, .topic, .partner, .podcast, .cta, .magband__lead, .shelf__item').filter((el) => !el.closest('.hero, .drawer, .search, .reader'));
+    let batch = 0;
+    let frame = 0;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.style.setProperty('--d', `${(batch++ % 6) * 70}ms`);
+        e.target.classList.add('is-in');
+        io.unobserve(e.target);
+      });
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => { batch = 0; });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    items.forEach((el) => { el.classList.add('reveal'); io.observe(el); });
   }
 
   // Masthead settles into a compact state once the page scrolls.
