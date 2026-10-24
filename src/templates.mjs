@@ -468,14 +468,27 @@ const sections = {
     return `
   <section class="week" aria-label="This week for your business">
     <div class="wrap week__inner">
-      <div class="week__col week__col--intro"><p class="eyebrow eyebrow--light">This week</p><p class="week__big">For your business</p></div>
+      <div class="week__col week__col--intro"><p class="week__eyebrow">This week</p><p class="week__lead">For your business</p></div>
       <a class="week__col" href="#deadlines" data-next-deadline data-deadlines="${esc(JSON.stringify(ctx.data.deadlines.map((x) => [x.date, x.title])))}">
         <span class="week__label">Next CRA deadline · <span data-days>${daysUntil(ctx, d.date)}</span></span>
-        <span class="week__title"><span data-date>${dayMonth(d.date)}</span> — <span data-title>${esc(d.title)}</span></span>
+        <span class="week__big" data-date>${dayMonth(d.date)}</span>
+        <span class="week__sub" data-title>${esc(d.title)}</span>
       </a>
-      <a class="week__col" href="${ctx.link('tools/')}#gst"><span class="week__label">Free tool</span><span class="week__title">GST/HST Calculator</span></a>
-      <a class="week__col" href="#provinces"><span class="week__label">Grants &amp; programs</span><span class="week__title">Find support in your province</span></a>
-      <a class="week__col" href="#newsletter"><span class="week__label">Every week</span><span class="week__title">Deadlines &amp; grants in your inbox</span></a>
+      <a class="week__col" href="${ctx.link('tools/')}#gst">
+        <span class="week__label">Free tool</span>
+        <span class="week__big">GST/HST Calculator</span>
+        <span class="week__sub">Rates for every province and territory →</span>
+      </a>
+      <a class="week__col" href="#provinces">
+        <span class="week__label">Grants &amp; programs</span>
+        <span class="week__big">Find funding in your province</span>
+        <span class="week__sub">Federal and provincial programs →</span>
+      </a>
+      <a class="week__col" href="#newsletter">
+        <span class="week__label">Weekly briefing</span>
+        <span class="week__big">Deadlines &amp; grants in your inbox</span>
+        <span class="week__sub">Subscribe free →</span>
+      </a>
     </div>
   </section>`;
   },
@@ -483,7 +496,7 @@ const sections = {
   trending: (ctx, s) => `
   <nav class="trending" aria-label="Trending topics">
     <div class="wrap trending__inner">
-      <p class="trending__title">${esc(s.title)}</p>
+      <p class="trending__title"><span class="dot" aria-hidden="true"></span>${esc(s.title)}</p>
       <div class="trending__chips">${s.topics.filter((t) => ctx.categories[t]).map((t) => `<a class="tchip" href="${catUrl(ctx, t)}">${esc(ctx.categories[t].name)}</a>`).join('')}</div>
     </div>
   </nav>`,
@@ -496,20 +509,26 @@ const sections = {
     return `
   <section class="section" id="latest" aria-labelledby="latest-title" data-latest>
     <div class="wrap">
-      ${shead(ctx, { eyebrow: s.eyebrow, title: s.title, id: 'latest-title', rule: true })}
+      <div class="latest__head">
+        <div class="latest__intro">
+          <p class="eyebrow">${esc(s.eyebrow)}</p>
+          <h2 class="h-section" id="latest-title">${esc(s.title)}</h2>
+          <p class="shead__text">Stay informed with timely perspectives, practical advice, and inspiring stories created for Canada’s small business community.</p>
+        </div>
+        <div class="latest__search">
+          <div class="field">
+            <label for="latest-q">Search articles</label>
+            <input id="latest-q" type="search" placeholder="e.g. cash flow, AI, CRM" data-latest-q autocomplete="off">
+          </div>
+          <p class="latest__count" role="status" aria-live="polite" data-latest-count>Showing the ${Math.min(s.show, posts.length)} most recent articles</p>
+        </div>
+      </div>
+      <div class="chips chips--rule" role="group" aria-label="Filter by topic">
+        <button class="chip is-on" type="button" data-chip="all" aria-pressed="true">All</button>
+        ${filters.map((f) => `<button class="chip" type="button" data-chip="${f}" aria-pressed="false">${esc(ctx.categories[f].name)}</button>`).join('')}
+      </div>
       <div class="latest">
         <div class="latest__main">
-          <div class="latest__tools">
-            <div class="field latest__search">
-              <label for="latest-q">Search articles</label>
-              <div class="input-icon">${icon.search}<input id="latest-q" type="search" placeholder="e.g. cash flow, AI, CRM" data-latest-q autocomplete="off"></div>
-            </div>
-            <p class="latest__count" role="status" aria-live="polite" data-latest-count>Showing the ${Math.min(s.show, posts.length)} most recent articles</p>
-          </div>
-          <div class="chips" role="group" aria-label="Filter by topic">
-            <button class="chip is-on" type="button" data-chip="all" aria-pressed="true">All</button>
-            ${filters.map((f) => `<button class="chip" type="button" data-chip="${f}" aria-pressed="false">${esc(ctx.categories[f].name)}</button>`).join('')}
-          </div>
           <div class="grid" data-latest-grid data-show="${s.show}">
             ${posts.map((p) => card(ctx, p, { sizes: '(min-width: 1100px) 26vw, (min-width: 700px) 45vw, 92vw', attrs: ` data-cat="${p.category}" data-text="${esc(`${p.title} ${p.excerpt} ${catOf(ctx, p).name}`.toLowerCase())}"` })).join('')}
           </div>
