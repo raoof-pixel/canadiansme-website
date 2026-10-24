@@ -339,12 +339,12 @@ const sections = {
               let pic, kicker, title;
               if (sl.kind === 'magazine') {
                 const m = mag(ctx, sl.magazine);
-                pic = `<img src="${img(m.cover, 160)}" alt="" width="54" height="70" loading="lazy" class="hero__tab-cover">`;
+                pic = `<img src="${img(m.cover, 160)}" alt="" width="54" height="70" decoding="async" class="hero__tab-cover">`;
                 kicker = 'Magazine';
                 title = `${m.issue} issue`;
               } else {
                 const p = P(ctx, sl.post);
-                pic = `<img src="${img(p.image, 240)}" alt="" width="92" height="62" loading="lazy">`;
+                pic = `<img src="${img(p.image, 240)}" alt="" width="92" height="62" decoding="async">`;
                 kicker = sl.label || catOf(ctx, p).name;
                 title = p.title;
               }
