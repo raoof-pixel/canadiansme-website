@@ -793,3 +793,88 @@ a.label:hover { color: var(--c, var(--red)); background: color-mix(in srgb, var(
   .story__body > p:first-child, .story__body > .lede { font-size: 18px; }
 }
 @media (prefers-reduced-motion: reduce) { .story__intro > *, .story__figure { animation: none; } }
+
+/* =========================================================================
+   Header & menu (same structure as the CanadianSME Claude Design artifact)
+   Top bar: date · strapline | social · search
+   Main bar: logo · ten menu links | Subscribe Free · Menu
+   ========================================================================= */
+.topbar { background: #0b1220; color: #aeb7c6; font-size: 13px; }
+.topbar__inner { height: 40px; }
+.topbar__left { display: flex; align-items: center; gap: 14px; min-width: 0; white-space: nowrap; }
+.topbar__left strong { color: #fff; font-weight: 600; }
+.topbar__bar { width: 1px; height: 14px; background: rgba(255, 255, 255, 0.2); }
+.topbar__strap { overflow: hidden; text-overflow: ellipsis; }
+.topbar__right { display: flex; align-items: center; gap: 18px; }
+.topbar__social { display: flex; gap: 14px; }
+.topbar__social a { font: 700 12px/1 var(--font); letter-spacing: 0.05em; color: #cbd5e1; transition: color var(--fast) var(--ease); }
+.topbar__social a:hover { color: #fff; }
+.topbar__search { display: inline-flex; align-items: center; gap: 6px; padding: 0 0 0 18px; border: 0; border-left: 1px solid rgba(255, 255, 255, 0.15); background: none; color: #cbd5e1; font: 500 13px/1 var(--font); cursor: pointer; transition: color var(--fast) var(--ease); }
+.topbar__search svg { width: 15px; height: 15px; }
+.topbar__search:hover { color: #fff; }
+
+.masthead__inner, .masthead.is-scrolled .masthead__inner { gap: 20px; }
+.masthead__inner { height: 78px; }
+.masthead.is-scrolled .masthead__inner { height: 66px; }
+.logo, .logo { margin-inline: 0; }
+.logo img { height: 40px; }
+.masthead.is-scrolled .logo img { height: 34px; }
+.mainnav { display: flex; gap: 0; margin: 0 auto 0 12px; }
+.mainnav a { padding: 10px 8px; font: 500 14.5px/1 var(--font); color: var(--ink-2); }
+.mainnav a::after { left: 8px; right: 8px; }
+.mainnav a[aria-current="page"] { color: var(--red); }
+.masthead__actions { gap: 10px; }
+.masthead__search { display: none; }
+.menu-btn { display: inline-flex; align-items: center; gap: 8px; height: 42px; padding: 0 16px 0 13px; border: 1px solid var(--line); border-radius: 999px; background: #fff; color: var(--ink); font: 600 14.5px/1 var(--font); cursor: pointer; transition: border-color var(--fast) var(--ease), background-color var(--fast) var(--ease); }
+.menu-btn svg { width: 18px; height: 18px; }
+.menu-btn:hover { border-color: var(--ink); background: var(--soft); }
+
+/* Slide-out menu panel (from the right, next to the Menu button) */
+.drawer__panel { inset: 0 0 0 auto; width: min(440px, 100%); padding: 18px 26px 28px; gap: 26px; transform: translateX(102%); }
+.drawer.is-open .drawer__panel { transform: none; }
+.drawer__top { display: flex; align-items: center; justify-content: space-between; }
+.drawer__top .logo img { height: 34px; }
+.drawer__close { align-self: center; }
+.drawer .drawer__main { display: grid; grid-template-columns: 1fr 1fr; gap: 0 20px; }
+.drawer .drawer__main a { padding: 12px 0; font-size: 19px; font-weight: 700; letter-spacing: -0.02em; border-bottom: 1px solid var(--line); transition: color var(--fast) var(--ease); }
+.drawer .drawer__main a:hover, .drawer .drawer__main a[aria-current="page"] { color: var(--red); }
+.drawer__group { display: grid; gap: 12px; }
+.drawer__title { font: 700 11.5px/1 var(--font); letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); }
+.drawer .drawer__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.drawer .drawer__chips a { padding: 7px 12px; border: 1px solid color-mix(in srgb, var(--c, var(--ink)) 22%, #fff); border-radius: 999px; background: color-mix(in srgb, var(--c, var(--ink)) 6%, #fff); color: color-mix(in srgb, var(--c, var(--ink)) 80%, #000); font-size: 13.5px; font-weight: 600; transition: background-color var(--fast) var(--ease), color var(--fast) var(--ease); }
+.drawer .drawer__chips a:hover { background: var(--c, var(--ink)); color: #fff; }
+.drawer__cols { grid-template-columns: 1fr 1fr; gap: 20px; }
+.drawer .drawer__cols nav { display: grid; gap: 2px; align-content: start; }
+.drawer .drawer__cols .drawer__title { margin-bottom: 8px; }
+.drawer .drawer__cols a { padding: 6px 0; font-size: 15px; font-weight: 500; color: var(--ink-2); border: 0; }
+.drawer .drawer__cols a:hover { color: var(--red); }
+.drawer .drawer__social { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.drawer .drawer__social a { padding: 0; font-size: 13.5px; font-weight: 500; color: var(--mute); border: 0; }
+.drawer .drawer__social a:hover { color: var(--ink); }
+
+@media (max-width: 1460px) and (min-width: 1241px) {
+  .mainnav { display: flex; margin-left: 6px; }
+  .mainnav a { padding-inline: 6px; font-size: 13.5px; }
+  .mainnav a::after { left: 6px; right: 6px; }
+  .logo img { height: 36px; }
+  .masthead__actions .btn { padding: 0 14px; }
+  .menu-btn { padding: 0 13px 0 11px; }
+}
+@media (max-width: 1360px) and (min-width: 1241px) {
+  .masthead__menu { display: none; }
+}
+@media (max-width: 1240px) {
+  .mainnav { display: none; }
+  .masthead__actions { margin-left: auto; }
+}
+@media (max-width: 760px) {
+  .topbar__strap, .topbar__bar, .topbar__social { display: none; }
+  .topbar__search { border: 0; padding: 0; }
+}
+@media (max-width: 600px) {
+  .masthead__actions .masthead__sub { display: none; }
+  .masthead__inner { height: 64px; }
+  .menu-btn span { display: none; }
+  .menu-btn { width: 42px; padding: 0; justify-content: center; }
+  .drawer .drawer__main { grid-template-columns: 1fr; }
+}

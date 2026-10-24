@@ -106,5 +106,73 @@
       "+1 416 655 0205",
       "+1 437 778 4446"
     ]
-  }
+  },
+  "strapline": "Canada’s leading platform for small business insights",
+  "menu": [
+    {
+      "label": "Home",
+      "href": "",
+      "match": "home"
+    },
+    {
+      "label": "Latest",
+      "href": "category/latest-news/",
+      "match": "latest-news"
+    },
+    {
+      "label": "Business",
+      "href": "category/small-business/",
+      "match": "small-business"
+    },
+    {
+      "label": "Technology & AI",
+      "href": "category/technology/",
+      "match": [
+        "technology",
+        "artificial-intelligence"
+      ]
+    },
+    {
+      "label": "Leadership",
+      "href": "category/small-business-leadership/",
+      "match": "small-business-leadership"
+    },
+    {
+      "label": "Finance",
+      "href": "category/finance-for-small-businesses/",
+      "match": "finance-for-small-businesses"
+    },
+    {
+      "label": "Podcast",
+      "href": "podcast/",
+      "match": "podcast"
+    },
+    {
+      "label": "Magazine",
+      "href": "https://issuu.com/canadiansme"
+    },
+    {
+      "label": "Events",
+      "href": "https://www.smesummit.ca/"
+    },
+    {
+      "label": "Resources",
+      "href": "category/sustainability/",
+      "match": "sustainability"
+    }
+  ],
+  "events": [
+    {
+      "label": "Small Business Summit",
+      "href": "https://www.smesummit.ca/"
+    },
+    {
+      "label": "Small Business Expo",
+      "href": "https://www.smeexpo.ca/"
+    },
+    {
+      "label": "National Business Awards",
+      "href": "https://www.smeawards.ca/"
+    }
+  ]
 }

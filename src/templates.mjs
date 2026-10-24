@@ -175,42 +175,65 @@ const logo = (ctx, light = false) => `
     <img src="${light ? LOGO_LIGHT : LOGO_DARK}?w=520&ssl=1" alt="CanadianSME Small Business Magazine" width="230" height="40">
   </a>`;
 
-const header = (ctx, active) => `
+const SOCIAL_SHORT = { LinkedIn: 'In', YouTube: 'YT', Instagram: 'IG', Facebook: 'FB', X: 'X' };
+const isActive = (item, active) => item.match && (Array.isArray(item.match) ? item.match.includes(active) : item.match === active);
+
+const header = (ctx, active) => {
+  const menu = ctx.site.menu;
+  const social = ['LinkedIn', 'YouTube', 'Instagram', 'Facebook', 'X'].map((n) => ctx.site.social.find((x) => x.label === n)).filter(Boolean);
+  return `
   <a class="skip" href="#main">Skip to content</a>
   <div class="topbar">
     <div class="wrap topbar__inner">
-      <p>${longDate(ctx.now.toISOString())}</p>
-      <nav aria-label="More from CanadianSME" class="topbar__links">
-        ${ctx.site.utilityLinks.map((l) => `<a href="${href(ctx, l.href)}"${ext(l.href)}>${esc(l.label)}</a>`).join('')}
-      </nav>
+      <p class="topbar__left"><strong>${longDate(ctx.now.toISOString())}</strong><span class="topbar__bar" aria-hidden="true"></span><span class="topbar__strap">${esc(ctx.site.strapline)}</span></p>
+      <div class="topbar__right">
+        <nav class="topbar__social" aria-label="CanadianSME on social media">${social.map((x) => `<a href="${x.href}" target="_blank" rel="noopener" aria-label="${esc(x.label)}">${SOCIAL_SHORT[x.label]}</a>`).join('')}</nav>
+        <button class="topbar__search" type="button" data-search-open>${icon.search} Search</button>
+      </div>
     </div>
   </div>
   <header class="masthead" data-masthead>
     <div class="wrap masthead__inner">
-      <button class="icon-btn masthead__menu" type="button" data-menu-open aria-label="Open menu">${icon.menu}</button>
       ${logo(ctx)}
-      <nav class="mainnav" aria-label="Sections">
-        ${ctx.site.nav.map((slug) => `<a href="${ctx.link(`category/${slug}/`)}"${active === slug ? ' aria-current="page"' : ''}>${esc(ctx.categories[slug].name)}</a>`).join('')}
-        <a href="${ctx.link('contact-us/')}"${active === 'contact-us' ? ' aria-current="page"' : ''}>Contact us</a>
+      <nav class="mainnav" aria-label="Main menu">
+        ${menu.map((m) => `<a href="${href(ctx, m.href)}"${ext(m.href)}${isActive(m, active) ? ' aria-current="page"' : ''}>${esc(m.label)}</a>`).join('')}
       </nav>
       <div class="masthead__actions">
-        <button class="icon-btn" type="button" data-search-open aria-label="Search articles">${icon.search}</button>
-        <a class="btn btn--red" href="${ctx.link('subscription/')}">Subscribe free</a>
+        <button class="icon-btn masthead__search" type="button" data-search-open aria-label="Search articles">${icon.search}</button>
+        <a class="btn btn--red masthead__sub" href="${ctx.link('subscription/')}">Subscribe Free</a>
+        <button class="menu-btn" type="button" data-menu-open aria-label="Open menu">${icon.menu}<span>Menu</span></button>
       </div>
     </div>
   </header>
   <div class="drawer" data-drawer hidden>
     <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
-      <button class="icon-btn drawer__close" type="button" data-menu-close aria-label="Close menu">${icon.close}</button>
-      <nav aria-label="Sections">
-        ${ctx.site.nav.map((slug) => `<a href="${ctx.link(`category/${slug}/`)}">${esc(ctx.categories[slug].name)}</a>`).join('')}
-        <a href="${ctx.link('contact-us/')}">Contact us</a>
+      <div class="drawer__top">
+        ${logo(ctx)}
+        <button class="icon-btn drawer__close" type="button" data-menu-close aria-label="Close menu">${icon.close}</button>
+      </div>
+      <nav class="drawer__main" aria-label="Main menu">
+        ${menu.map((m) => `<a href="${href(ctx, m.href)}"${ext(m.href)}${isActive(m, active) ? ' aria-current="page"' : ''}>${esc(m.label)}</a>`).join('')}
       </nav>
-      <nav class="drawer__secondary" aria-label="More from CanadianSME">
-        ${ctx.site.utilityLinks.map((l) => `<a href="${href(ctx, l.href)}"${ext(l.href)}>${esc(l.label)}</a>`).join('')}
-        <a href="${ctx.link('about-us/')}">About us</a>
-      </nav>
-      <a class="btn btn--red btn--block" href="${ctx.link('subscription/')}">Subscribe free</a>
+      <div class="drawer__group">
+        <p class="drawer__title">All topics</p>
+        <nav class="drawer__chips" aria-label="All topics">${Object.values(ctx.categories).map((c) => `<a href="${ctx.link(`category/${c.slug}/`)}"${tone(c.slug)}>${esc(c.name)}</a>`).join('')}</nav>
+      </div>
+      <div class="drawer__group drawer__cols">
+        <nav aria-label="Events">
+          <p class="drawer__title">Events</p>
+          ${ctx.site.events.map((l) => `<a href="${l.href}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join('')}
+        </nav>
+        <nav aria-label="CanadianSME">
+          <p class="drawer__title">CanadianSME</p>
+          <a href="${ctx.link('about-us/')}">About us</a>
+          <a href="${ctx.link('ups-small-business/')}">UPS Small Business</a>
+          <a href="${ctx.link('start-up-stories/')}">Start-up stories</a>
+          <a href="${ctx.link('contact-us/')}">Advertise</a>
+          <a href="${ctx.link('contact-us/')}">Contact us</a>
+        </nav>
+      </div>
+      <a class="btn btn--red btn--block" href="${ctx.link('subscription/')}">Subscribe Free</a>
+      <nav class="drawer__social" aria-label="Social">${social.map((x) => `<a href="${x.href}" target="_blank" rel="noopener">${esc(x.label)}</a>`).join('')}</nav>
     </div>
   </div>
   <div class="search" data-search hidden>
@@ -223,6 +246,7 @@ const header = (ctx, active) => `
       <ul class="search__results" data-search-results></ul>
     </div>
   </div>`;
+};
 
 const newsletter = (ctx, id = 'nl') => `
   <form class="newsletter" action="${ctx.link('subscription/')}" method="get">
@@ -587,6 +611,7 @@ export const home = (ctx) => {
     canonical: `${ctx.site.url}/`,
     image: ctx.home.magazines[0].cover,
     body,
+    active: 'home',
     bodyClass: 'is-home',
     jsonld: {
       '@context': 'https://schema.org',
