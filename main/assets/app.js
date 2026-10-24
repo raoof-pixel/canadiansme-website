@@ -227,6 +227,40 @@
     $$('[data-menu-close]').forEach((b) => b.addEventListener('click', drawer.close));
   }
 
+  // Mega menus: open on hover or keyboard focus, close on leave, Escape or outside click.
+  const megaItems = $$('[data-mega]');
+  const megaPanels = $$('[data-mega-panel]');
+  let megaTimer = null;
+  function closeMegas() {
+    clearTimeout(megaTimer);
+    megaPanels.forEach((p) => { p.hidden = true; });
+    megaItems.forEach((li) => { li.classList.remove('is-open'); $('a', li)?.setAttribute('aria-expanded', 'false'); });
+  }
+  const openMega = (key) => {
+    clearTimeout(megaTimer);
+    megaPanels.forEach((p) => { p.hidden = p.dataset.megaPanel !== key; });
+    megaItems.forEach((li) => {
+      const on = li.dataset.mega === key;
+      li.classList.toggle('is-open', on);
+      $('a', li)?.setAttribute('aria-expanded', String(on));
+    });
+  };
+  if (megaItems.length) {
+    const masthead = $('[data-masthead]');
+    megaItems.forEach((li) => {
+      li.addEventListener('mouseenter', () => { megaTimer = setTimeout(() => openMega(li.dataset.mega), 90); });
+      li.addEventListener('mouseleave', () => clearTimeout(megaTimer));
+      $('a', li).addEventListener('focus', () => openMega(li.dataset.mega));
+    });
+    $$('.mainnav li:not([data-mega])').forEach((li) => li.addEventListener('mouseenter', closeMegas));
+    $$('.mainnav li:not([data-mega]) a, .logo, .masthead__actions a, .masthead__actions button').forEach((el) => el.addEventListener('focus', closeMegas));
+    masthead.addEventListener('mouseleave', () => { megaTimer = setTimeout(closeMegas, 180); });
+    masthead.addEventListener('mouseenter', () => clearTimeout(megaTimer));
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMegas(); });
+    document.addEventListener('click', (e) => { if (!e.target.closest('[data-masthead]')) closeMegas(); });
+    addEventListener('scroll', () => { if (scrollY > 600) closeMegas(); }, { passive: true });
+  }
+
   const searchEl = $('[data-search]');
   if (searchEl) {
     const search = overlay(searchEl);
@@ -253,5 +287,16 @@
     addEventListener('keydown', (e) => {
       if (e.key === '/' && !/input|textarea/i.test(document.activeElement.tagName)) { e.preventDefault(); search.open(); }
     });
+
+    // Menu links such as provinces open the search already filled in (?q=Ontario also works as a link).
+    const searchFor = (q) => { search.open(); input.value = q; render(); };
+    $$('[data-search-q]').forEach((a) => a.addEventListener('click', (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+      e.preventDefault();
+      closeMegas();
+      searchFor(a.dataset.searchQ);
+    }));
+    const startQ = new URLSearchParams(location.search).get('q');
+    if (startQ) searchFor(startQ);
   }
 })();
