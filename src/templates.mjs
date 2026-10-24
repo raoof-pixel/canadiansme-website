@@ -18,6 +18,18 @@ const icon = {
   mail: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="1.5"/><path d="m4 7 8 6 8-6"/></svg>',
 };
 
+// ---------- Topic colours ----------
+// One colour per category: drives the chip, card accent line and topic cards.
+const TONES = {
+  'latest-news': '#2563eb', 'small-business-leadership': '#7c3aed', interviews: '#e11d48', technology: '#0891b2',
+  'women-entrepreneurship': '#db2777', 'finance-for-small-businesses': '#059669', marketing: '#ea580c', retail: '#ca8a04',
+  workplace: '#4f46e5', 'small-business': '#d71920', entrepreneurship: '#9333ea', 'artificial-intelligence': '#0284c7',
+  innovation: '#0d9488', 'cybersecurity-for-small-businesses': '#475569', economy: '#16a34a', 'diversity-and-inclusion': '#c026d3',
+  'e-commerce': '#d97706', sustainability: '#65a30d', 'editors-pick': '#b45309',
+};
+const toneOf = (slug) => TONES[slug] || '#d71920';
+const tone = (slug) => ` style="--c:${toneOf(slug)}"`;
+
 // ---------- Helpers ----------
 
 const href = (ctx, path) => (/^https?:/.test(path) ? path : ctx.link(path));
@@ -67,6 +79,14 @@ const meta = (ctx, p, { author = true, read = false } = {}) => {
   return `<p class="meta">${parts.join('<span class="sep" aria-hidden="true"></span>')}</p>`;
 };
 
+const foot = (ctx, p) => {
+  const a = ctx.authors[p.author];
+  return `<div class="card__foot">
+      <span class="avatar avatar--sm" aria-hidden="true">${esc(initials(a?.name || 'CanadianSME'))}</span>
+      <span class="card__who">${a ? `<a href="${ctx.link(`author/${a.slug}/`)}">${esc(a.name)}</a>` : ''}<span><time datetime="${p.date}">${shortDate(p.date)}</time> · ${p.readingTime} min read</span></span>
+    </div>`;
+};
+
 const head = (ctx, title, more, moreLabel = 'View all', extra = '') => `
   <div class="head">
     <h2>${esc(title)}</h2>
@@ -77,49 +97,51 @@ const head = (ctx, title, more, moreLabel = 'View all', extra = '') => `
 // ---------- Cards ----------
 
 // Standard card: image on top. Used in grids and carousels.
-export const card = (ctx, p, vt, { excerpt = false, sizes = '(min-width: 1100px) 25vw, (min-width: 700px) 45vw, 90vw', attrs = '' } = {}) => `
-  <article class="card"${attrs}>
-    <a class="card__img" href="${postUrl(ctx, p)}" tabindex="-1" aria-hidden="true">${picture(p, { w: 800, sizes, vt: vt(p) })}</a>
+export const card = (ctx, p, vt, { excerpt = true, sizes = '(min-width: 1100px) 25vw, (min-width: 700px) 45vw, 90vw', attrs = '', badge = '' } = {}) => `
+  <article class="card"${tone(p.category)}${attrs}>
+    <a class="card__img" href="${postUrl(ctx, p)}" tabindex="-1" aria-hidden="true">${picture(p, { w: 800, sizes, vt: vt(p) })}${badge ? `<span class="card__badge">${esc(badge)}</span>` : ''}</a>
     <div class="card__body">
       ${label(ctx, p)}
       <h3 class="card__title"><a href="${postUrl(ctx, p)}">${esc(p.title)}</a></h3>
       ${excerpt ? `<p class="card__excerpt">${esc(p.excerpt)}</p>` : ''}
-      ${meta(ctx, p)}
+      ${foot(ctx, p)}
     </div>
   </article>`;
 
 // Portrait card for interviews.
 const portrait = (ctx, p, vt) => `
-  <article class="portrait">
+  <article class="portrait"${tone(p.category)}>
     <a class="portrait__img" href="${postUrl(ctx, p)}" tabindex="-1" aria-hidden="true">${picture(p, { w: 800, sizes: '(min-width: 1100px) 22vw, 70vw', vt: vt(p) })}</a>
     <h3 class="card__title"><a href="${postUrl(ctx, p)}">${esc(p.title)}</a></h3>
     <p class="card__excerpt">${esc(p.excerpt)}</p>
+    <p class="portrait__who">${esc(ctx.authors[p.author]?.name || '')}</p>
   </article>`;
 
 // Story row: text left, large image right (FullStory pattern).
 const storyRow = (ctx, p, vt, { flip = false } = {}) => `
-  <article class="row${flip ? ' row--flip' : ''}">
+  <article class="row${flip ? ' row--flip' : ''}"${tone(p.category)}>
     <div class="row__text">
       ${label(ctx, p)}
       <h3 class="row__title"><a href="${postUrl(ctx, p)}">${esc(p.title)}</a></h3>
       <p class="row__excerpt">${esc(p.excerpt)}</p>
-      ${meta(ctx, p, { read: true })}
+      ${foot(ctx, p)}
     </div>
     <a class="row__img" href="${postUrl(ctx, p)}" tabindex="-1" aria-hidden="true">${picture(p, { w: 1000, sizes: '(min-width: 1100px) 34vw, 90vw', vt: vt(p) })}</a>
   </article>`;
 
 // Thumbnail line for sidebars and compact lists.
 export const thumb = (ctx, p, vt) => `
-  <article class="thumb">
+  <article class="thumb"${tone(p.category)}>
     <a class="thumb__img" href="${postUrl(ctx, p)}" tabindex="-1" aria-hidden="true">${picture(p, { w: 320, sizes: '96px', vt: vt(p) })}</a>
     <div>
+      <p class="thumb__cat">${esc(catOf(ctx, p).name)}</p>
       <h3 class="thumb__title"><a href="${postUrl(ctx, p)}">${esc(p.title)}</a></h3>
       <p class="meta"><time datetime="${p.date}">${shortDate(p.date)}</time></p>
     </div>
   </article>`;
 
 // Back-compat names used by listing pages.
-export const storyCard = (ctx, p, vt, opts = {}) => card(ctx, p, vt, { excerpt: opts.excerpt });
+export const storyCard = (ctx, p, vt) => card(ctx, p, vt);
 export const rowCard = thumb;
 
 // ---------- Ads and magazine ----------
@@ -364,13 +386,14 @@ const sections = {
   <nav class="trending" aria-label="Trending topics">
     <div class="wrap trending__inner">
       <p class="trending__title"><span class="dot" aria-hidden="true"></span>${esc(s.title)}</p>
-      <div class="trending__chips">${s.topics.map((t) => `<a class="chip" href="${ctx.link(`category/${t}/`)}">${esc(ctx.categories[t].name)}</a>`).join('')}</div>
+      <div class="trending__chips">${s.topics.map((t) => `<a class="chip"${tone(t)} href="${ctx.link(`category/${t}/`)}">${esc(ctx.categories[t].name)}</a>`).join('')}</div>
     </div>
   </nav>`,
 
   'featured-row': (ctx, s, vt) => `
   <section class="wrap section section--first" aria-label="Featured stories">
-    <div class="grid grid--4">${s.posts.map((x) => card(ctx, P(ctx, x), vt)).join('')}</div>
+    ${head(ctx, s.title || 'Featured this week', s.more)}
+    <div class="grid grid--4">${s.posts.map((x, i) => card(ctx, P(ctx, x), vt, { badge: i === 0 ? 'Featured' : '' })).join('')}</div>
   </section>`,
 
   'main-sidebar': (ctx, s, vt) => `
@@ -447,10 +470,42 @@ const sections = {
   },
 
   carousel: (ctx, s, vt) => `
-  <section class="wrap section" aria-label="${esc(s.title)}" data-carousel>
+  <section class="tint tint--${s.tint || 'none'}" aria-label="${esc(s.title)}" data-carousel><div class="wrap section">
     ${head(ctx, s.title, s.more, 'View all', `<div class="carousel__nav"><button class="round-btn" type="button" data-car-prev aria-label="Scroll back">${icon.prev}</button><button class="round-btn" type="button" data-car-next aria-label="Scroll forward">${icon.next}</button></div>`)}
     <div class="carousel${s.style === 'portrait' ? ' carousel--portrait' : ''}" data-car-track tabindex="0">
-      ${s.posts.map((x) => (s.style === 'portrait' ? portrait(ctx, P(ctx, x), vt) : card(ctx, P(ctx, x), vt))).join('')}
+      ${s.posts.map((x) => (s.style === 'portrait' ? portrait(ctx, P(ctx, x), vt) : card(ctx, P(ctx, x), vt, { sizes: '(min-width: 1100px) 25vw, (min-width: 700px) 34vw, 70vw' }))).join('')}
+    </div>
+  </div></section>`,
+
+  topics: (ctx, s) => `
+  <section class="wrap section" aria-labelledby="topics-title">
+    <div class="topics__head">
+      <div>
+        <h2 id="topics-title">${esc(s.title)}</h2>
+        <p>${esc(s.text)}</p>
+      </div>
+    </div>
+    <div class="topics">
+      ${s.topics
+        .map((slug) => {
+          const c = ctx.categories[slug];
+          const list = ctx.byCategory[slug] || [];
+          const latest = list[0];
+          return `
+      <article class="topic"${tone(slug)}>
+        <a class="topic__link" href="${ctx.link(`category/${slug}/`)}">
+          ${latest ? `<span class="topic__img">${picture(latest, { w: 400, sizes: '(min-width: 1100px) 15vw, 40vw' })}</span>` : ''}
+          <span class="topic__body">
+            <span class="topic__count">${list.length} ${list.length === 1 ? 'story' : 'stories'}</span>
+            <span class="topic__name">${esc(c.name)}</span>
+            <span class="topic__text">${esc(c.description || '')}</span>
+            ${latest ? `<span class="topic__latest"><span>Latest</span>${esc(latest.title)}</span>` : ''}
+          </span>
+          <span class="topic__go" aria-hidden="true">${icon.arrow}</span>
+        </a>
+      </article>`;
+        })
+        .join('')}
     </div>
   </section>`,
 
@@ -462,7 +517,7 @@ const sections = {
         .map((p) => `<a class="partner" href="${p.href}" target="_blank" rel="noopener">${p.logo ? `<img src="${img(p.logo, 240)}" alt="" width="120" height="60" loading="lazy">` : `<span class="partner__mono" aria-hidden="true">AC</span>`}<span><strong>${esc(p.name)}</strong><span>${esc(p.role)}</span></span></a>`)
         .join('')}
     </div>
-    <div class="grid grid--3">${s.posts.map((x) => card(ctx, P(ctx, x), vt, { excerpt: true, sizes: '(min-width: 1100px) 30vw, 90vw' }).replace('<div class="card__body">', '<div class="card__body"><p class="paid">Partner content</p>')).join('')}</div>
+    <div class="grid grid--3">${s.posts.map((x) => card(ctx, P(ctx, x), vt, { sizes: '(min-width: 1100px) 30vw, 90vw', badge: 'Partner content' })).join('')}</div>
     <aside class="sponsor-note" aria-label="Advertisement from ${esc(s.note.sponsor)}">
       <p class="ad__label">Advertisement</p>
       <p><strong>${esc(s.note.sponsor)}.</strong> ${esc(s.note.text)}</p>
@@ -478,7 +533,7 @@ const sections = {
         return `
       <div class="lists__col">
         ${head(ctx, b.title, b.more, 'More')}
-        ${card(ctx, posts[0], vt, { sizes: '(min-width: 1100px) 30vw, 90vw' })}
+        ${card(ctx, posts[0], vt, { sizes: '(min-width: 1100px) 30vw, 90vw', excerpt: false })}
         <div class="thumbs">${posts.slice(1).map((p) => thumb(ctx, p, vt)).join('')}</div>
       </div>`;
       })
@@ -637,7 +692,7 @@ const listing = (ctx, { heading, intro, posts, active, canonical, title, extraHe
     ${intro ? `<p>${esc(intro)}</p>` : ''}
   </header>
   ${first ? `<section class="wrap section section--first" aria-label="Most recent"><div class="rows rows--lead">${storyRow(ctx, first, vt)}</div></section>` : `<p class="wrap empty">No articles here yet.</p>`}
-  ${rest.length ? `<section class="wrap section" aria-label="More articles"><div class="grid grid--3">${rest.map((p) => card(ctx, p, vt, { excerpt: true })).join('')}</div></section>` : ''}
+  ${rest.length ? `<section class="wrap section" aria-label="More articles"><div class="grid grid--3">${rest.map((p) => card(ctx, p, vt)).join('')}</div></section>` : ''}
   <div class="wrap section section--ad">${ad(ctx, 'ups-leaderboard')}</div>`;
   return page(ctx, { title, description: intro || ctx.site.tagline, canonical, image: first?.image, active, body });
 };

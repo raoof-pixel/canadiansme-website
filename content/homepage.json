@@ -209,7 +209,8 @@
         "navigating-it-in-the-age-of-ai-why-proactive-it-has-become-a-business-essential",
         "faster-deals-stronger-connections-how-duca-financial-services-credit-union-ltd-and-pfg-financial-are-raising-the-bar-for-business-consultant-and-accountant-partnerships",
         "why-canadian-smes-need-an-ai-strategy"
-      ]
+      ],
+      "title": "Featured this week"
     },
     {
       "type": "main-sidebar",
@@ -238,6 +239,21 @@
         "button": "Subscribe free",
         "href": "subscription/"
       }
+    },
+    {
+      "type": "topics",
+      "title": "Explore by topic",
+      "text": "Pick a subject and dive in: every topic is packed with interviews, guides and stories from Canadian small business.",
+      "topics": [
+        "interviews",
+        "technology",
+        "artificial-intelligence",
+        "finance-for-small-businesses",
+        "women-entrepreneurship",
+        "small-business",
+        "marketing",
+        "small-business-leadership"
+      ]
     },
     {
       "type": "ad",
@@ -339,7 +355,8 @@
         "navigating-it-in-the-age-of-ai-why-proactive-it-has-become-a-business-essential",
         "how-canadian-smes-can-make-better-technology-decisions-the-procurepro-approach",
         "bluebird-it-the-it-team-behind-your-doctors-computer"
-      ]
+      ],
+      "tint": "blue"
     },
     {
       "type": "carousel",
@@ -355,7 +372,8 @@
         "5-best-ai-tools-for-canadian-small-businesses",
         "why-human-communication-matters-more-in-the-ai-era",
         "from-youtube-university-to-the-app-store-how-mick-brown-built-heyup-with-ai"
-      ]
+      ],
+      "tint": "violet"
     },
     {
       "type": "carousel",
@@ -372,7 +390,8 @@
         "giving-busy-canadians-back-what-matters-most-time",
         "building-in-public-how-stan-creates-momentum"
       ],
-      "style": "portrait"
+      "style": "portrait",
+      "tint": "peach"
     },
     {
       "type": "partner-content",
