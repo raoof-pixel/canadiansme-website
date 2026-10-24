@@ -707,11 +707,11 @@ a.label:hover { color: var(--c, var(--red)); background: color-mix(in srgb, var(
 .story__hero::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(70% 90% at 0% 100%, color-mix(in srgb, var(--c, var(--red)) 30%, transparent), transparent 60%), linear-gradient(90deg, rgba(11, 18, 32, 0.92) 0%, rgba(11, 18, 32, 0.65) 50%, rgba(11, 18, 32, 0.35) 100%); }
 .story__hero-inner { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: center; gap: clamp(32px, 4.5vw, 64px); padding-block: clamp(40px, 5vw, 72px); }
 .story__intro { display: grid; gap: 18px; justify-items: start; }
-.story__intro > * { animation: story-in 800ms var(--ease-out) both; }
-.story__intro > :nth-child(2) { animation-delay: 80ms; }
-.story__intro > :nth-child(3) { animation-delay: 160ms; }
-.story__intro > :nth-child(4) { animation-delay: 240ms; }
-@keyframes story-in { from { opacity: 0; transform: translateY(18px); } }
+.story__intro > * { animation: story-in 500ms var(--ease-out) both; }
+.story__intro > :nth-child(2) { animation-delay: 40ms; }
+.story__intro > :nth-child(3) { animation-delay: 80ms; }
+.story__intro > :nth-child(4) { animation-delay: 120ms; }
+@keyframes story-in { from { opacity: 0.15; transform: translateY(12px); } }
 .crumbs--light { color: #aeb7c6; }
 .crumbs--light a:hover { color: #fff; }
 .story__title { font-size: clamp(30px, 3.5vw, 50px); line-height: 1.1; letter-spacing: -0.03em; text-wrap: balance; }
@@ -720,7 +720,7 @@ a.label:hover { color: var(--c, var(--red)); background: color-mix(in srgb, var(
 .story__meta > span { display: inline-flex; align-items: center; gap: 8px; }
 .story__meta svg { width: 16px; height: 16px; opacity: 0.8; }
 .story__meta .label { color: color-mix(in srgb, var(--c, var(--red)) 45%, #fff); background: color-mix(in srgb, var(--c, var(--red)) 26%, transparent); }
-.story__figure { position: relative; margin: 0; border-radius: 18px; overflow: hidden; box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.1); animation: story-in 1000ms var(--ease-out) 120ms both; background: rgba(255, 255, 255, 0.04); }
+.story__figure { position: relative; margin: 0; border-radius: 18px; overflow: hidden; box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.1); animation: story-in 700ms var(--ease-out) 60ms both; background: rgba(255, 255, 255, 0.04); }
 .story__figure img { width: 100%; height: auto; max-height: 560px; object-fit: contain; }
 
 /* Share: a vertical rail at the hero’s right edge, plus an inline set in the side column */
