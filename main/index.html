@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://i0.wp.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
-<link rel="stylesheet" href="assets/styles.css?v=mvn089im">
+<link rel="stylesheet" href="assets/styles.css?v=mvn0gke2">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"NewsMediaOrganization","name":"CanadianSME Small Business Magazine","url":"https://canadiansme.ca","logo":"https://i0.wp.com/canadiansme.ca/wp-content/uploads/2021/03/Magazine-dark-logo.png","address":"6345 Dixie Rd, Unit 202, Mississauga, ON L5T 2E6","telephone":"+1 416 655 0205","sameAs":["https://facebook.com/canadiansme","https://www.instagram.com/canadiansme","https://www.linkedin.com/company/canadiansme-business-magazine/","https://x.com/canadian_sme","https://www.youtube.com/channel/UCM8xNX6MJ3KILM56S_GuG_Q"]}</script>
 </head>
 <body class="is-home" data-root="" data-index="1">
@@ -195,48 +195,59 @@
 
   <section class="week" aria-label="This week for your business">
     <div class="wrap week__inner">
-      <div class="week__col week__col--intro"><p class="eyebrow eyebrow--light">This week</p><p class="week__big">For your business</p></div>
+      <div class="week__col week__col--intro"><p class="week__eyebrow">This week</p><p class="week__lead">For your business</p></div>
       <a class="week__col" href="#deadlines" data-next-deadline data-deadlines="[[&quot;2026-11-02&quot;,&quot;Q3 GST/HST return and payment due&quot;],[&quot;2026-11-16&quot;,&quot;October payroll remittance due&quot;],[&quot;2026-12-15&quot;,&quot;November payroll remittance due&quot;],[&quot;2026-12-31&quot;,&quot;Corporate tax instalment&quot;],[&quot;2026-12-31&quot;,&quot;Last day to incur deductible expenses&quot;],[&quot;2027-01-15&quot;,&quot;December payroll remittance due&quot;],[&quot;2027-02-01&quot;,&quot;Q4 GST/HST return and payment due&quot;],[&quot;2027-03-01&quot;,&quot;T4 and T5 slips filed and given to recipients&quot;],[&quot;2027-03-01&quot;,&quot;RRSP contribution deadline&quot;],[&quot;2027-04-30&quot;,&quot;Personal tax balance owing due&quot;],[&quot;2027-06-15&quot;,&quot;T1 return due for self-employed&quot;]]">
         <span class="week__label">Next CRA deadline · <span data-days>in 8 days</span></span>
-        <span class="week__title"><span data-date>Nov 2</span> — <span data-title>Q3 GST/HST return and payment due</span></span>
+        <span class="week__big" data-date>Nov 2</span>
+        <span class="week__sub" data-title>Q3 GST/HST return and payment due</span>
       </a>
-      <a class="week__col" href="tools/index.html#gst"><span class="week__label">Free tool</span><span class="week__title">GST/HST Calculator</span></a>
-      <a class="week__col" href="#provinces"><span class="week__label">Grants &amp; programs</span><span class="week__title">Find support in your province</span></a>
-      <a class="week__col" href="#newsletter"><span class="week__label">Every week</span><span class="week__title">Deadlines &amp; grants in your inbox</span></a>
+      <a class="week__col" href="tools/index.html#gst">
+        <span class="week__label">Free tool</span>
+        <span class="week__big">GST/HST Calculator</span>
+        <span class="week__sub">Rates for every province and territory →</span>
+      </a>
+      <a class="week__col" href="#provinces">
+        <span class="week__label">Grants &amp; programs</span>
+        <span class="week__big">Find funding in your province</span>
+        <span class="week__sub">Federal and provincial programs →</span>
+      </a>
+      <a class="week__col" href="#newsletter">
+        <span class="week__label">Weekly briefing</span>
+        <span class="week__big">Deadlines &amp; grants in your inbox</span>
+        <span class="week__sub">Subscribe free →</span>
+      </a>
     </div>
   </section>
 
   <nav class="trending" aria-label="Trending topics">
     <div class="wrap trending__inner">
-      <p class="trending__title">Trending</p>
+      <p class="trending__title"><span class="dot" aria-hidden="true"></span>Trending</p>
       <div class="trending__chips"><a class="tchip" href="category/artificial-intelligence/index.html">Artificial intelligence</a><a class="tchip" href="category/finance-for-small-businesses/index.html">Finance</a><a class="tchip" href="category/cybersecurity-for-small-businesses/index.html">Cybersecurity</a><a class="tchip" href="category/women-entrepreneurship/index.html">Women entrepreneurs</a><a class="tchip" href="category/entrepreneurship/index.html">Entrepreneurs</a><a class="tchip" href="category/small-business-leadership/index.html">Leadership</a><a class="tchip" href="category/economy/index.html">Economy</a><a class="tchip" href="category/marketing/index.html">Marketing</a></div>
     </div>
   </nav>
 
   <section class="section" id="latest" aria-labelledby="latest-title" data-latest>
     <div class="wrap">
-      
-  <div class="shead shead--rule">
-    <div class="shead__copy">
-      <p class="eyebrow">Editorial</p>
-      <h2 class="h-section" id="latest-title">Latest Business Insights</h2>
-      
-    </div>
-    
-  </div>
+      <div class="latest__head">
+        <div class="latest__intro">
+          <p class="eyebrow">Editorial</p>
+          <h2 class="h-section" id="latest-title">Latest Business Insights</h2>
+          <p class="shead__text">Stay informed with timely perspectives, practical advice, and inspiring stories created for Canada’s small business community.</p>
+        </div>
+        <div class="latest__search">
+          <div class="field">
+            <label for="latest-q">Search articles</label>
+            <input id="latest-q" type="search" placeholder="e.g. cash flow, AI, CRM" data-latest-q autocomplete="off">
+          </div>
+          <p class="latest__count" role="status" aria-live="polite" data-latest-count>Showing the 9 most recent articles</p>
+        </div>
+      </div>
+      <div class="chips chips--rule" role="group" aria-label="Filter by topic">
+        <button class="chip is-on" type="button" data-chip="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-chip="interviews" aria-pressed="false">Interviews</button><button class="chip" type="button" data-chip="technology" aria-pressed="false">Technology</button><button class="chip" type="button" data-chip="small-business" aria-pressed="false">Small business</button><button class="chip" type="button" data-chip="artificial-intelligence" aria-pressed="false">Artificial intelligence</button><button class="chip" type="button" data-chip="finance-for-small-businesses" aria-pressed="false">Finance</button><button class="chip" type="button" data-chip="marketing" aria-pressed="false">Marketing</button><button class="chip" type="button" data-chip="small-business-leadership" aria-pressed="false">Leadership</button>
+      </div>
       <div class="latest">
         <div class="latest__main">
-          <div class="latest__tools">
-            <div class="field latest__search">
-              <label for="latest-q">Search articles</label>
-              <div class="input-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg><input id="latest-q" type="search" placeholder="e.g. cash flow, AI, CRM" data-latest-q autocomplete="off"></div>
-            </div>
-            <p class="latest__count" role="status" aria-live="polite" data-latest-count>Showing the 9 most recent articles</p>
-          </div>
-          <div class="chips" role="group" aria-label="Filter by topic">
-            <button class="chip is-on" type="button" data-chip="all" aria-pressed="true">All</button>
-            <button class="chip" type="button" data-chip="interviews" aria-pressed="false">Interviews</button><button class="chip" type="button" data-chip="technology" aria-pressed="false">Technology</button><button class="chip" type="button" data-chip="small-business" aria-pressed="false">Small business</button><button class="chip" type="button" data-chip="artificial-intelligence" aria-pressed="false">Artificial intelligence</button><button class="chip" type="button" data-chip="finance-for-small-businesses" aria-pressed="false">Finance</button><button class="chip" type="button" data-chip="marketing" aria-pressed="false">Marketing</button><button class="chip" type="button" data-chip="small-business-leadership" aria-pressed="false">Leadership</button>
-          </div>
           <div class="grid" data-latest-grid data-show="9">
             
   <article class="card" data-cat="retail" data-text="selling beside canada’s top tech retailer: how best buy marketplace opens doors for small sellers for a small canadian retailer, the hardest thing to buy is credibility. best buy marketplace lets smaller sellers borrow it. retail">
@@ -1040,7 +1051,7 @@
     <div class="reader__frame"><iframe data-reader-frame title="Magazine reader" allowfullscreen></iframe></div>
   </div>
 </div>
-<script src="assets/search-index.js?v=mvn089im" defer></script>
-<script src="assets/app.js?v=mvn089im" defer></script>
+<script src="assets/search-index.js?v=mvn0gke2" defer></script>
+<script src="assets/app.js?v=mvn0gke2" defer></script>
 </body>
 </html>

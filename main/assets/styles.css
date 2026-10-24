@@ -341,18 +341,22 @@ a.eyebrow:hover { color: var(--red-deep); }
 
 /* ---------- This week band ---------- */
 .week { background: var(--ink); color: #d0d5dd; }
-.week__inner { display: grid; grid-template-columns: 0.8fr 1.4fr 1fr 1fr 1fr; padding-block: 26px; }
-.week__col { display: grid; gap: 6px; align-content: start; padding: 4px 22px; border-left: 1px solid rgba(255, 255, 255, 0.16); }
-.week__col--intro { padding-left: 0; border-left: 0; }
-.week__big { font: 700 19px/1.2 var(--font-head); color: #fff; }
-.week__label { font: 700 10.5px/1.3 var(--font-head); letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate-400); }
-.week__title { font: 600 15px/1.35 var(--font-head); color: #fff; }
-a.week__col:hover .week__title { color: var(--red-light); }
+.week__inner { display: grid; grid-template-columns: 0.95fr repeat(4, minmax(0, 1fr)); padding-block: 26px; }
+.week__col { display: flex; flex-direction: column; gap: 6px; padding: 2px 24px; border-left: 1px solid rgba(255, 255, 255, 0.16); }
+.week__col--intro { justify-content: center; padding-left: 0; border-left: 0; }
+.week__eyebrow { font: 700 11px/1.3 var(--font-head); letter-spacing: 0.13em; text-transform: uppercase; color: var(--red-light); }
+.week__lead { font: 800 22px/1.2 var(--font-head); color: #fff; letter-spacing: -0.01em; }
+.week__label { font: 600 11.5px/1.3 var(--font-head); color: #d0d5dd; }
+.week__big { font: 800 22px/1.15 var(--font-head); color: #fff; letter-spacing: -0.01em; }
+.week__sub { font-size: 14px; line-height: 1.45; color: #d0d5dd; }
+a.week__col:hover .week__big { color: var(--red-light); }
+a.week__col:hover .week__sub { color: #fff; }
 
 /* ---------- Trending ---------- */
 .trending { background: var(--mist); border-bottom: 1px solid var(--line); }
 .trending__inner { display: flex; align-items: center; gap: 16px; padding-block: 14px; }
-.trending__title { flex-shrink: 0; font: 700 11px var(--font-head); letter-spacing: 0.13em; text-transform: uppercase; color: var(--red); }
+.trending__title { flex-shrink: 0; display: flex; align-items: center; gap: 8px; font: 800 11px var(--font-head); letter-spacing: 0.13em; text-transform: uppercase; color: var(--ink); }
+.trending__title .dot { width: 6px; height: 6px; }
 .trending__chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-block: 2px; }
 .trending__chips::-webkit-scrollbar { display: none; }
 .tchip { flex-shrink: 0; display: inline-flex; align-items: center; min-height: 36px; padding: 7px 14px; border: 1px solid var(--line); border-radius: 999px; background: #fff; font: 600 13px var(--font-head); white-space: nowrap; transition: border-color var(--fast) var(--ease), color var(--fast) var(--ease); }
@@ -360,9 +364,14 @@ a.week__col:hover .week__title { color: var(--red-light); }
 
 /* ---------- Latest ---------- */
 .latest { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 40px; align-items: start; }
-.latest__tools { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-.latest__search { width: min(420px, 100%); }
-.latest__count { font-size: 13.5px; color: var(--slate-500); }
+.latest__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px 40px; flex-wrap: wrap; }
+.latest__intro { display: grid; gap: 10px; justify-items: start; max-width: 640px; }
+.latest__intro .shead__text { color: var(--slate-500); }
+.latest__search { display: grid; gap: 8px; width: min(270px, 100%); }
+.latest__search label { font-size: 13px; color: var(--slate-500); }
+.latest__count { font-size: 13px; color: var(--slate-500); }
+.chips--rule { margin: 26px 0 28px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+.chips--rule .chip { min-height: 36px; padding: 7px 14px; border-width: 1px; font-size: 13.5px; }
 .latest__more { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 32px; }
 .card.is-filtered, .card.is-folded { display: none; }
 .latest__side { position: sticky; top: 96px; display: grid; gap: 24px; }
@@ -832,9 +841,10 @@ input[type="range"] { width: 100%; min-height: 32px; accent-color: var(--red); }
 /* ---------- Responsive ---------- */
 @media (max-width: 1239px) {
   .mainnav, .mega { display: none !important; }
-  .week__inner { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 0; }
+  .week__inner { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 0; }
   .week__col--intro { grid-column: 1 / -1; }
   .week__col:nth-child(2n) { padding-left: 0; border-left: 0; }
+  .week__big, .week__lead { font-size: 19px; }
 }
 @media (min-width: 1240px) {
   .menu-btn__text { display: none; }
