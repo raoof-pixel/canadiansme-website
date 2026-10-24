@@ -607,7 +607,20 @@ export const article = (ctx, post, html) => {
   const cat = catOf(ctx, post);
   const author = ctx.authors[post.author];
   const related = ctx.byCategory[post.category].filter((p) => p.slug !== post.slug).slice(0, 4);
-  const sidebar = ctx.latest.filter((p) => p.slug !== post.slug && !related.includes(p)).slice(0, 5);
+  const pageUrl = `${ctx.site.url}/${post.slug}/`;
+  const u = encodeURIComponent(pageUrl);
+  const t = encodeURIComponent(post.title);
+  const share = [
+    ['Facebook', `https://www.facebook.com/sharer/sharer.php?u=${u}`, '<path d="M14 8.5h2V5.2h-2.4C11 5.2 10 6.8 10 9v1.8H8V14h2v6h3.2v-6h2.4l.4-3.2h-2.8V9.4c0-.6.3-.9.8-.9z" fill="currentColor" stroke="none"/>'],
+    ['X', `https://twitter.com/intent/tweet?url=${u}&text=${t}`, '<path d="M5 5l14 14M19 5 5 19" stroke-width="2"/>'],
+    ['LinkedIn', `https://www.linkedin.com/sharing/share-offsite/?url=${u}`, '<path d="M6.5 9.5V18M6.5 6v.01M10.5 18v-5a2.5 2.5 0 0 1 5 0v5M10.5 11v7"/>'],
+    ['WhatsApp', `https://wa.me/?text=${t}%20${u}`, '<path d="M5 19l1.2-3.6A7.5 7.5 0 1 1 9 18.3z"/><path d="M9.5 9.5c.3 1.7 1.8 3.4 3.8 4l1-1 1.7.8"/>'],
+  ];
+  const shareLinks = (cls) => `<div class="${cls}">${share
+    .map(([n, h, d]) => `<a href="${h}" target="_blank" rel="noopener" aria-label="Share on ${n}"><svg viewBox="0 0 24 24" aria-hidden="true">${d}</svg><span>${n}</span></a>`)
+    .join('')}<button type="button" data-copy="${pageUrl}" aria-label="Copy link"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><span>Copy link</span></button></div>`;
+  const clock = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 8v4.5l3 1.8"/></svg>';
+  const cal = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="2"/><path d="M4 10h16M9 3.5v4M15 3.5v4"/></svg>';
   const fallback = `
     <p class="lede">${esc(post.excerpt)}</p>
     <div class="notice">
@@ -617,19 +630,44 @@ export const article = (ctx, post, html) => {
 
   const body = `
   <div class="progress" data-progress aria-hidden="true"></div>
-  <article class="post">
-    <header class="wrap post__head">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="${ctx.link('')}">Home</a><span aria-hidden="true">/</span><a href="${ctx.link(`category/${cat.slug}/`)}">${esc(cat.name)}</a></nav>
-      <h1 class="post__title">${esc(post.title)}</h1>
-      <p class="post__dek">${esc(post.excerpt)}</p>
-      <div class="post__byline">
-        <span class="avatar" aria-hidden="true">${esc(initials(author.name))}</span>
-        <p><a class="post__author" href="${ctx.link(`author/${author.slug}/`)}">${esc(author.name)}</a><span class="meta"><time datetime="${post.date}">${longDate(post.date)}</time><span class="sep" aria-hidden="true"></span>${post.readingTime} min read</span></p>
+  <article class="story"${tone(post.category)}>
+    <header class="story__hero">
+      <div class="story__glow" aria-hidden="true" style="background-image:url('${img(post.image, 500)}')"></div>
+      <div class="wrap story__hero-inner">
+        <div class="story__intro">
+          <nav class="crumbs crumbs--light" aria-label="Breadcrumb"><a href="${ctx.link('')}">Home</a><span aria-hidden="true">/</span><a href="${ctx.link(`category/${cat.slug}/`)}">${esc(cat.name)}</a></nav>
+          <h1 class="story__title">${esc(post.title)}</h1>
+          <p class="story__dek">${esc(post.excerpt)}</p>
+          <p class="story__meta">
+            <a class="label" href="${ctx.link(`category/${cat.slug}/`)}">${esc(cat.name)}</a>
+            <span>${cal}<time datetime="${post.date}">${longDate(post.date)}</time></span>
+            <span>${clock}${post.readingTime} min read</span>
+          </p>
+        </div>
+        <figure class="story__figure">
+          ${picture(post, { w: 1400, sizes: '(min-width: 1100px) 46vw, 92vw', vt: vt(post), eager: true })}
+        </figure>
       </div>
+      ${shareLinks('story__share')}
     </header>
-    <figure class="wrap post__hero">${picture(post, { w: 1600, sizes: '(min-width: 1360px) 1280px, 100vw', vt: vt(post), eager: true })}</figure>
-    <div class="wrap post__layout">
-      <div class="prose">
+
+    <div class="wrap story__layout">
+      <aside class="story__side" aria-label="About this article">
+        <div class="story__side-inner">
+          <p class="story__reading">You’re reading</p>
+          <p class="story__side-title">${esc(post.title)}</p>
+          <p class="story__time">${clock}${post.readingTime} min read</p>
+          <div class="story__meter" aria-hidden="true"><span data-meter></span></div>
+          <div class="story__author">
+            <span class="avatar avatar--lg" aria-hidden="true">${esc(initials(author.name))}</span>
+            <p><a href="${ctx.link(`author/${author.slug}/`)}">${esc(author.name)}</a>${author.role ? `<span>${esc(author.role)}</span>` : ''}<span>Published on ${shortDate(post.date)}</span></p>
+          </div>
+          <p class="story__share-title">Share this story</p>
+          ${shareLinks('story__share story__share--inline')}
+        </div>
+      </aside>
+
+      <div class="prose story__body">
         ${html || fallback}
         <aside class="author-card" aria-label="About the author">
           <span class="avatar avatar--lg" aria-hidden="true">${esc(initials(author.name))}</span>
@@ -640,18 +678,15 @@ export const article = (ctx, post, html) => {
           </div>
         </aside>
       </div>
-      <aside class="post__aside" aria-labelledby="aside-title">
-        <div class="post__aside-inner">
-          <h2 id="aside-title" class="side-title">Latest</h2>
-          <div class="thumbs">${sidebar.map((p) => thumb(ctx, p, vt)).join('')}</div>
-          ${ad(ctx, 'ups-skyscraper')}
-        </div>
+
+      <aside class="story__ad" aria-label="Advertisement">
+        <div class="story__ad-inner">${ad(ctx, 'ups-skyscraper')}</div>
       </aside>
     </div>
   </article>
   ${related.length ? `
-  <section class="wrap section" aria-labelledby="related-title">
-    <div class="head"><h2 id="related-title">More in ${esc(cat.name)}</h2></div>
+  <section class="wrap section story__related" aria-labelledby="related-title">
+    ${head(ctx, `More in ${cat.name}`, `category/${cat.slug}/`).replace('<h2>', '<h2 id="related-title">')}
     <div class="grid grid--4">${related.map((p) => card(ctx, p, vt)).join('')}</div>
   </section>` : ''}
   <div class="wrap section section--ad">${ad(ctx, 'ups-leaderboard')}</div>`;

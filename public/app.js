@@ -169,10 +169,16 @@
     items.forEach((el) => { el.classList.add('reveal'); io.observe(el); });
   }
 
+  // Copy-link buttons on articles.
+  $$('[data-copy]').forEach((b) => b.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(b.dataset.copy); b.classList.add('is-done'); setTimeout(() => b.classList.remove('is-done'), 1600); } catch { /* clipboard unavailable */ }
+  }));
+
   // Masthead settles into a compact state once the page scrolls.
   const masthead = $('[data-masthead]');
   const progress = $('[data-progress]');
   const prose = $('.prose');
+  const meter = $('[data-meter]');
   let ticking = false;
   const onScroll = () => {
     if (ticking) return;
@@ -184,6 +190,7 @@
         const total = r.height - innerHeight * 0.6;
         const done = Math.min(1, Math.max(0, -r.top / Math.max(total, 1)));
         progress.style.transform = `scaleX(${done})`;
+        if (meter) meter.style.width = `${Math.round(done * 100)}%`;
       }
       ticking = false;
     });
