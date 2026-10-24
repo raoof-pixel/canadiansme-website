@@ -191,6 +191,7 @@ const header = (ctx, active) => `
       ${logo(ctx)}
       <nav class="mainnav" aria-label="Sections">
         ${ctx.site.nav.map((slug) => `<a href="${ctx.link(`category/${slug}/`)}"${active === slug ? ' aria-current="page"' : ''}>${esc(ctx.categories[slug].name)}</a>`).join('')}
+        <a href="${ctx.link('contact-us/')}"${active === 'contact-us' ? ' aria-current="page"' : ''}>Contact us</a>
       </nav>
       <div class="masthead__actions">
         <button class="icon-btn" type="button" data-search-open aria-label="Search articles">${icon.search}</button>
@@ -203,11 +204,11 @@ const header = (ctx, active) => `
       <button class="icon-btn drawer__close" type="button" data-menu-close aria-label="Close menu">${icon.close}</button>
       <nav aria-label="Sections">
         ${ctx.site.nav.map((slug) => `<a href="${ctx.link(`category/${slug}/`)}">${esc(ctx.categories[slug].name)}</a>`).join('')}
+        <a href="${ctx.link('contact-us/')}">Contact us</a>
       </nav>
       <nav class="drawer__secondary" aria-label="More from CanadianSME">
         ${ctx.site.utilityLinks.map((l) => `<a href="${href(ctx, l.href)}"${ext(l.href)}>${esc(l.label)}</a>`).join('')}
         <a href="${ctx.link('about-us/')}">About us</a>
-        <a href="${ctx.link('contact-us/')}">Contact us</a>
       </nav>
       <a class="btn btn--red btn--block" href="${ctx.link('subscription/')}">Subscribe free</a>
     </div>
@@ -781,7 +782,7 @@ export const staticPage = (ctx, pg, html) => {
     <h1>${esc(pg.title)}</h1>
   </header>
   <div class="wrap page-body">${out}</div>`;
-  return page(ctx, { title: `${pg.title} | ${ctx.site.fullName}`, description: pg.description, canonical: `${ctx.site.url}/${pg.slug}/`, body });
+  return page(ctx, { title: `${pg.title} | ${ctx.site.fullName}`, description: pg.description, canonical: `${ctx.site.url}/${pg.slug}/`, active: pg.slug, body });
 };
 
 // ---------- Draft preview ----------

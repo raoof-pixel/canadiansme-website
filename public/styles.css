@@ -113,15 +113,15 @@ a.label:hover { color: var(--red-deep); }
 
 .masthead { position: sticky; top: 0; z-index: 50; background: rgba(255, 255, 255, 0.92); -webkit-backdrop-filter: saturate(180%) blur(14px); backdrop-filter: saturate(180%) blur(14px); border-bottom: 1px solid var(--line); transition: box-shadow var(--mid) var(--ease); }
 .masthead.is-scrolled { box-shadow: 0 8px 24px -18px rgba(13, 19, 33, 0.35); }
-.masthead__inner { display: flex; align-items: center; gap: 20px; height: 84px; transition: height var(--mid) var(--ease); }
+.masthead__inner { display: flex; align-items: center; gap: 16px; height: 84px; transition: height var(--mid) var(--ease); }
 .masthead.is-scrolled .masthead__inner { height: 68px; }
 .masthead__menu { display: none; margin-left: -10px; }
 .logo { display: inline-flex; flex-shrink: 0; }
 .logo img { height: 46px; width: auto; transition: height var(--mid) var(--ease); }
 .masthead.is-scrolled .logo img { height: 38px; }
 .mainnav { display: flex; gap: 2px; margin-inline: auto; white-space: nowrap; }
-.mainnav a { position: relative; padding: 10px 9px; font: 500 15px/1 var(--font); color: var(--ink-2); transition: color var(--fast) var(--ease); }
-.mainnav a::after { content: ""; position: absolute; left: 9px; right: 9px; bottom: 2px; height: 2px; background: var(--red); transform: scaleX(0); transform-origin: left; transition: transform var(--mid) var(--ease); }
+.mainnav a { position: relative; padding: 10px 7px; font: 500 14.5px/1 var(--font); color: var(--ink-2); transition: color var(--fast) var(--ease); }
+.mainnav a::after { content: ""; position: absolute; left: 7px; right: 7px; bottom: 2px; height: 2px; background: var(--red); transform: scaleX(0); transform-origin: left; transition: transform var(--mid) var(--ease); }
 .mainnav a:hover { color: var(--ink); }
 .mainnav a:hover::after, .mainnav a[aria-current="page"]::after { transform: scaleX(1); }
 .mainnav a[aria-current="page"] { color: var(--ink); }
@@ -489,6 +489,13 @@ a.label:hover { color: var(--red-deep); }
 @keyframes vt-in { from { opacity: 0; transform: translateY(8px); } }
 
 /* ---------- Responsive ---------- */
+@media (max-width: 1460px) and (min-width: 1361px) {
+  .logo img { height: 40px; }
+  .masthead.is-scrolled .logo img { height: 36px; }
+  .mainnav a { padding-inline: 6px; font-size: 14px; }
+  .mainnav a::after { left: 6px; right: 6px; }
+  .masthead__actions .btn { padding: 0 15px; }
+}
 @media (max-width: 1360px) {
   .mainnav { display: none; }
   .masthead__menu { display: inline-grid; }
