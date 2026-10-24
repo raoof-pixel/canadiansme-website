@@ -711,7 +711,7 @@ a.label:hover { color: var(--c, var(--red)); background: color-mix(in srgb, var(
 .story__intro > :nth-child(2) { animation-delay: 40ms; }
 .story__intro > :nth-child(3) { animation-delay: 80ms; }
 .story__intro > :nth-child(4) { animation-delay: 120ms; }
-@keyframes story-in { from { opacity: 0.15; transform: translateY(12px); } }
+@keyframes story-in { from { transform: translateY(14px); } }
 .crumbs--light { color: #aeb7c6; }
 .crumbs--light a:hover { color: #fff; }
 .story__title { font-size: clamp(30px, 3.5vw, 50px); line-height: 1.1; letter-spacing: -0.03em; text-wrap: balance; }
