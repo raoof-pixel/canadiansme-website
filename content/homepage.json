@@ -442,14 +442,5 @@
       "button": "Share your story",
       "href": "start-up-stories/"
     }
-  ],
-  "rails": {
-    "left": {
-      "type": "magazine",
-      "magazine": "oct-2026"
-    },
-    "right": {
-      "type": "subscribe"
-    }
-  }
+  ]
 }

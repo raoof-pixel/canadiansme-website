@@ -151,20 +151,6 @@
     readerEl.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
   }
 
-  // Floating side cards step aside whenever a full-width dark band (hero,
-  // magazine band, footer) passes behind them, so they never sit on top of one.
-  const railEls = $$('[data-rail]');
-  const bands = $$('.hero, .band, .footer');
-  const placeRails = () => {
-    if (!railEls.length || getComputedStyle(railEls[0]).display === 'none') return;
-    railEls.forEach((r) => {
-      const top = parseFloat(getComputedStyle(r).top) || 150;
-      const bottom = top + r.offsetHeight;
-      const covered = bands.some((b) => { const br = b.getBoundingClientRect(); return br.top < bottom && br.bottom > top; });
-      r.classList.toggle('is-hidden', covered);
-    });
-  };
-
   // Masthead settles into a compact state once the page scrolls.
   const masthead = $('[data-masthead]');
   const progress = $('[data-progress]');
@@ -175,7 +161,6 @@
     ticking = true;
     requestAnimationFrame(() => {
       masthead?.classList.toggle('is-scrolled', scrollY > 40);
-      placeRails();
       if (progress && prose) {
         const r = prose.getBoundingClientRect();
         const total = r.height - innerHeight * 0.6;
