@@ -22,6 +22,9 @@ let authorsList = [...(await readJSON('content/authors.json')), ...(await readJS
 let rawPosts = [...(await readJSON('content/posts.json')), ...(await readJSON('content/posts-more.json'))];
 const home = await readJSON('content/homepage.json');
 const pages = await readJSON('content/pages.json');
+const data = await readJSON('content/guide.json');
+// Pages that now have their own templates instead of the HTML in content/pages.
+const DEDICATED = new Set(['about-us', 'contact-us', 'podcast', 'subscription']);
 
 // Live content from the CMS when CMS_URL is set (see src/cms.mjs); otherwise the JSON files above.
 const CMS_URL = process.env.CMS_URL;
@@ -70,13 +73,22 @@ const byCategory = Object.fromEntries(categoriesList.map((c) => [c.slug, posts.f
 const featured = [...posts.filter((p) => p.featured), ...posts.filter((p) => !p.featured && p.category !== 'latest-news')];
 const now = new Date(posts[0].date);
 
-const searchIndex = posts.map((p) => ({ s: p.slug, t: p.title, c: categories[p.category].name }));
+const searchIndex = [
+  ...posts.map((p) => ({ s: p.slug, t: p.title, c: categories[p.category].name, x: p.excerpt })),
+  // Non-article results: u is a site path or a full URL, k is the kind shown in results.
+  ...data.tools.map((x) => ({ u: `tools/#${x.key}`, t: x.title, c: 'Free tool', k: 'Tool', x: x.desc })),
+  ...data.episodes.map((x) => ({ u: x.href, t: x.title, c: 'Podcast', k: 'Podcast', x: `With ${x.guest}` })),
+  ...data.events.map((x) => ({ u: `events/${x.slug}/`, t: x.name, c: 'Event', k: 'Event', x: x.desc })),
+  ...data.resourceGroups.flatMap((g) => g.items).filter((x) => !x.href.startsWith('tools/')).map((x) => ({ u: x.href, t: x.title, c: x.kind, k: 'Resource', x: x.desc })),
+  ...data.provinces.map((x) => ({ u: '#provinces', t: `Business in ${x.label}`, c: 'Province', k: 'Resource', x: x.watch })),
+];
 
 const postsBySlug = Object.fromEntries(posts.map((p) => [p.slug, p]));
 if (CMS_URL) refreshHomepage(home, { posts, postsBySlug, byCategory, featured });
 // Changes on every build so browsers and CDNs never mix new pages with old CSS/JS.
 const version = Date.now().toString(36);
-const base = { version, site, categories, authors, posts, postsBySlug, byCategory, featured, latest: posts, now, searchIndex, home };
+const today = new Date();
+const base = { version, data, today, site, categories, authors, posts, postsBySlug, byCategory, featured, latest: posts, now, searchIndex, home };
 
 async function emit(path, render, { rootLinks = false } = {}) {
   const depth = path.split('/').length - 1;
@@ -96,9 +108,22 @@ for (const p of posts) await emit(`${p.slug}/index.html`, (ctx) => t.article(ctx
 for (const c of categoriesList) await emit(`category/${c.slug}/index.html`, (ctx) => t.category(ctx, c));
 for (const a of authorsList) await emit(`author/${a.slug}/index.html`, (ctx) => t.authorPage(ctx, a));
 for (const pg of pages) {
+  if (DEDICATED.has(pg.slug)) continue;
   const html = await readFile(join(root, 'content/pages', `${pg.file}.html`), 'utf8');
   await emit(`${pg.slug}/index.html`, (ctx) => t.staticPage(ctx, pg, html));
 }
+await emit('about-us/index.html', (ctx) => t.aboutPage(ctx));
+await emit('contact-us/index.html', (ctx) => t.contactPage(ctx));
+await emit('subscription/index.html', (ctx) => t.subscribePage(ctx));
+await emit('podcast/index.html', (ctx) => t.podcastPage(ctx));
+await emit('advertise/index.html', (ctx) => t.advertisePage(ctx));
+await emit('search/index.html', (ctx) => t.searchPage(ctx));
+await emit('resources/index.html', (ctx) => t.resourcesPage(ctx));
+await emit('tools/index.html', (ctx) => t.toolsPage(ctx));
+await emit('magazine/index.html', (ctx) => t.magazineArchive(ctx));
+for (const m of home.magazines) await emit(`magazine/${m.id}/index.html`, (ctx) => t.magazineIssue(ctx, m));
+await emit('events/index.html', (ctx) => t.eventsPage(ctx));
+for (const e of data.events) await emit(`events/${e.slug}/index.html`, (ctx) => t.eventPage(ctx, e));
 await emit('404.html', (ctx) => t.notFound(ctx), { rootLinks: true });
 // Template the CMS fills in to show unpublished drafts in the real site design (Preview button).
 await emit('_preview/index.html', (ctx) => t.previewTemplate(ctx));
@@ -110,6 +135,9 @@ await writeFile(join(out, 'assets', 'search-index.js'), `window.__SEARCH_INDEX__
 const urls = [
   `${site.url}/`,
   ...pages.map((p) => `${site.url}/${p.slug}/`),
+  ...['advertise', 'search', 'resources', 'tools', 'magazine', 'events'].map((p) => `${site.url}/${p}/`),
+  ...home.magazines.map((m) => `${site.url}/magazine/${m.id}/`),
+  ...data.events.map((e) => `${site.url}/events/${e.slug}/`),
   ...posts.map((p) => `${site.url}/${p.slug}/`),
   ...categoriesList.map((c) => `${site.url}/category/${c.slug}/`),
   ...authorsList.map((a) => `${site.url}/author/${a.slug}/`),

@@ -168,16 +168,18 @@
     },
     {
       "label": "Magazine",
-      "href": "https://issuu.com/canadiansme"
+      "href": "magazine/",
+      "match": "magazine"
     },
     {
       "label": "Events",
-      "href": "https://www.smesummit.ca/"
+      "href": "events/",
+      "match": "events"
     },
     {
       "label": "Resources",
-      "href": "category/sustainability/",
-      "match": "sustainability"
+      "href": "resources/",
+      "match": "resources"
     }
   ],
   "events": [
@@ -233,15 +235,23 @@
     },
     {
       "label": "Magazine",
-      "href": "https://issuu.com/canadiansme"
+      "href": "magazine/"
     },
     {
       "label": "Events",
-      "href": "https://www.smesummit.ca/"
+      "href": "events/"
     },
     {
       "label": "Resources",
-      "href": "category/sustainability/"
+      "href": "resources/"
+    },
+    {
+      "label": "Free Tools",
+      "href": "tools/"
+    },
+    {
+      "label": "Advertise",
+      "href": "advertise/"
     },
     {
       "label": "Contact us",
