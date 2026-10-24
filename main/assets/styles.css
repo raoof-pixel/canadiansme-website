@@ -312,7 +312,9 @@ a.eyebrow:hover { color: var(--red-deep); }
 .slider__tab-title { font-size: 13.5px; line-height: 1.3; font-weight: 600; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .slider__arrows { display: flex; gap: 8px; flex-shrink: 0; }
 @keyframes slider-fill { to { transform: scaleX(1); } }
-.slider__title { font-family: var(--font-head); font-weight: 800; }
+.slider__title { font-family: var(--font-head); font-weight: 800; color: #fff; }
+.slider__title a:hover { color: #ffd5d7; }
+.slider .btn--ghost-dark { border-color: rgba(255, 255, 255, 0.45); }
 .slider__tab-title, .slider__tab-kicker { font-family: var(--font-head); }
 .slider__label { display: inline-block; font: 700 11px/1.3 var(--font-head); letter-spacing: 0.13em; text-transform: uppercase; color: var(--red-light); }
 .slider__arrow { display: inline-grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 50%; background: rgba(255, 255, 255, 0.14); color: #fff; transition: background-color var(--fast) var(--ease); }
