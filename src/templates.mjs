@@ -7,6 +7,10 @@ const FAVICON = 'https://i0.wp.com/canadiansme.ca/wp-content/uploads/2021/02/cro
 // ---------- Icons ----------
 
 const icon = {
+  book: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5z"/></svg>',
+  next: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>',
+  prev: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>',
+  arrow: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>',
   search: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>',
   close: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
   play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor" stroke="none"/></svg>',
@@ -352,6 +356,80 @@ const daysUntil = (ctx, iso) => {
 const dayMonth = (iso) => shortDate(`${iso}T12:00:00`).replace(/, \d{4}$/, '');
 
 const sections = {
+  hero: (ctx, s) => `
+  <section class="slider" aria-roledescription="carousel" aria-label="Top stories and this month’s magazine" data-slider>
+    ${s.slides
+      .map((sl, i) => {
+        const on = i === 0;
+        const hide = on ? '' : ' tabindex="-1"';
+        if (sl.kind === 'magazine') {
+          const m = mag(ctx, sl.magazine);
+          const hl = (sl.highlights || [])
+            .map((h) => `<li><a href="${ctx.link(`${h.post}/`)}"${hide}><span>p. ${esc(h.page)}</span>${esc(h.title)}</a></li>`)
+            .join('');
+          return `
+      <article class="slider__slide slider__slide--mag${on ? ' is-active' : ''}" data-slide aria-roledescription="slide" aria-label="${i + 1} of ${s.slides.length}"${on ? '' : ' aria-hidden="true"'}>
+        <div class="slider__bg slider__bg--blur" style="background-image:url('${img(m.cover, 600)}')" aria-hidden="true"></div>
+        <div class="wrap slider__inner">
+          <div class="slider__copy">
+            <p class="slider__label">${esc(m.title)}, ${esc(m.issue)}</p>
+            <h${on ? 1 : 2} class="slider__title">${esc(sl.heading)}</h${on ? 1 : 2}>
+            <p class="slider__text">${esc(sl.text)}</p>
+            ${hl ? `<ul class="slider__issue-list">${hl}</ul>` : ''}
+            <div class="btn-row">
+              <a class="btn btn--primary" href="${m.href}" target="_blank" rel="noopener"${readerAttrs(m)}${hide}>${icon.book} ${esc(sl.cta)}</a>
+              <a class="btn btn--ghost-dark" href="${ctx.link('subscription/')}"${hide}>Subscribe free</a>
+            </div>
+          </div>
+          <div class="slider__cover">${cover(ctx, m, { eager: on, sizes: '(min-width: 900px) 340px, 60vw' })}</div>
+        </div>
+      </article>`;
+        }
+        const p = P(ctx, sl.post);
+        const a = ctx.authors[p.author];
+        return `
+      <article class="slider__slide slider__slide--story${on ? ' is-active' : ''}" data-slide aria-roledescription="slide" aria-label="${i + 1} of ${s.slides.length}"${on ? '' : ' aria-hidden="true"'}>
+        <div class="slider__bg" aria-hidden="true">${picture(p, { w: 1600, sizes: '100vw', eager: on, cls: 'slider__photo' })}</div>
+        <div class="wrap slider__inner">
+          <div class="slider__copy">
+            <p class="slider__label">${esc(sl.label || catOf(ctx, p).name)}</p>
+            <h${on ? 1 : 2} class="slider__title"><a href="${postUrl(ctx, p)}"${hide}>${esc(p.title)}</a></h${on ? 1 : 2}>
+            <p class="slider__text">${esc(p.excerpt)}</p>
+            <p class="slider__meta"><a href="${postUrl(ctx, p)}"${hide}>Read story ${icon.arrow}</a><span>${esc(a.name)}</span><span>${p.readingTime} min read</span></p>
+          </div>
+        </div>
+      </article>`;
+      })
+      .join('')}
+    <div class="slider__bar">
+      <div class="wrap slider__bar-inner">
+        <div class="slider__tabs" role="tablist" aria-label="Choose a story">
+          ${s.slides
+            .map((sl, i) => {
+              let pic, kicker, title;
+              if (sl.kind === 'magazine') {
+                const m = mag(ctx, sl.magazine);
+                pic = `<img src="${img(m.cover, 160)}" alt="" width="54" height="70" decoding="async" class="slider__tab-cover">`;
+                kicker = 'Magazine';
+                title = `${m.issue} issue`;
+              } else {
+                const p = P(ctx, sl.post);
+                pic = `<img src="${img(p.image, 240)}" alt="" width="92" height="62" decoding="async">`;
+                kicker = sl.label || catOf(ctx, p).name;
+                title = p.title;
+              }
+              return `<button class="slider__tab" type="button" role="tab" data-dot="${i}" aria-label="Show slide ${i + 1}: ${esc(title)}"${i === 0 ? ' aria-current="true"' : ''}><span class="slider__tab-line" aria-hidden="true"></span><span class="slider__tab-pic">${pic}</span><span class="slider__tab-text"><span class="slider__tab-kicker">${esc(kicker)}</span><span class="slider__tab-title">${esc(title)}</span></span></button>`;
+            })
+            .join('')}
+        </div>
+        <div class="slider__arrows">
+          <button class="slider__arrow" type="button" data-prev aria-label="Previous slide">${icon.prev}</button>
+          <button class="slider__arrow" type="button" data-next aria-label="Next slide">${icon.next}</button>
+        </div>
+      </div>
+    </div>
+  </section>`,
+
   top: (ctx, s) => {
     const [lead, ...rest] = s.posts.map((x) => P(ctx, x));
     const c = catOf(ctx, lead);
