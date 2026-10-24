@@ -45,3 +45,13 @@ export const makeLinker = (depth, { indexLinks = false } = {}) => {
     return up + clean;
   };
 };
+
+// JSON for inline <script> blocks: escapes characters that could close the tag or break parsing,
+// so a title like "</script><script>alert(1)" stays harmless text.
+export const safeJson = (v) =>
+  JSON.stringify(v)
+    .replace(/</g, '\\u003c')
+    .replace(/>/g, '\\u003e')
+    .replace(/&/g, '\\u0026')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029');

@@ -1,4 +1,4 @@
-import { esc, img, full, srcset, shortDate, longDate } from './lib.mjs';
+import { esc, img, full, srcset, shortDate, longDate, safeJson } from './lib.mjs';
 
 const LOGO_DARK = 'https://i0.wp.com/canadiansme.ca/wp-content/uploads/2021/03/Magazine-dark-logo.png';
 const LOGO_LIGHT = 'https://i0.wp.com/canadiansme.ca/wp-content/uploads/2021/02/Magazine-light-logo-1.png';
@@ -294,7 +294,7 @@ ${image ? `<meta property="og:image" content="${img(image, 1200)}">\n<meta name=
 <link rel="preconnect" href="https://i0.wp.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap">
 <link rel="stylesheet" href="${ctx.link('assets/styles.css')}?v=${ctx.version}">
-${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script>` : ''}
+${jsonld ? `<script type="application/ld+json">${safeJson(jsonld)}</script>` : ''}
 </head>
 <body${bodyClass ? ` class="${bodyClass}"` : ''}>
 ${header(ctx, active)}

@@ -5,7 +5,7 @@ import { readFile, writeFile, mkdir, rm, cp, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { makeLinker, readingTime } from './src/lib.mjs';
+import { makeLinker, readingTime, safeJson } from './src/lib.mjs';
 import { loadFromCMS } from './src/cms.mjs';
 import { refreshHomepage } from './src/homepage.mjs';
 import * as t from './src/templates.mjs';
@@ -78,9 +78,11 @@ if (CMS_URL) refreshHomepage(home, { posts, postsBySlug, byCategory, featured })
 const version = Date.now().toString(36);
 const base = { version, site, categories, authors, posts, postsBySlug, byCategory, featured, latest: posts, now, searchIndex, home };
 
-async function emit(path, render) {
+async function emit(path, render, { rootLinks = false } = {}) {
   const depth = path.split('/').length - 1;
-  const ctx = { ...base, link: makeLinker(depth, { indexLinks }), depth };
+  // The 404 page is shown at any URL depth, so it needs links from the site root.
+  const link = rootLinks && !indexLinks ? (p = '') => (/^https?:/.test(p) ? p : '/' + p.replace(/^\//, '')) : makeLinker(depth, { indexLinks });
+  const ctx = { ...base, link, depth };
   const file = join(out, path);
   await mkdir(dirname(file), { recursive: true });
   await writeFile(file, render(ctx));
@@ -97,12 +99,12 @@ for (const pg of pages) {
   const html = await readFile(join(root, 'content/pages', `${pg.file}.html`), 'utf8');
   await emit(`${pg.slug}/index.html`, (ctx) => t.staticPage(ctx, pg, html));
 }
-await emit('404.html', (ctx) => t.notFound(ctx));
+await emit('404.html', (ctx) => t.notFound(ctx), { rootLinks: true });
 // Template the CMS fills in to show unpublished drafts in the real site design (Preview button).
 await emit('_preview/index.html', (ctx) => t.previewTemplate(ctx));
 // Search index as its own file (cached once) instead of inside every page.
 await mkdir(join(out, 'assets'), { recursive: true });
-await writeFile(join(out, 'assets', 'search-index.js'), `window.__SEARCH_INDEX__=${JSON.stringify(searchIndex)};`);
+await writeFile(join(out, 'assets', 'search-index.js'), `window.__SEARCH_INDEX__=${safeJson(searchIndex)};`);
 
 // SEO files
 const urls = [
