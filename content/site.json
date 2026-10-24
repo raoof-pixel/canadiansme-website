@@ -122,25 +122,44 @@
     {
       "label": "Business",
       "href": "category/small-business/",
-      "match": "small-business"
+      "match": [
+        "small-business",
+        "entrepreneurship",
+        "economy",
+        "retail",
+        "sustainability"
+      ],
+      "mega": "business"
     },
     {
       "label": "Technology & AI",
       "href": "category/technology/",
       "match": [
         "technology",
-        "artificial-intelligence"
-      ]
+        "artificial-intelligence",
+        "cybersecurity-for-small-businesses",
+        "e-commerce",
+        "innovation"
+      ],
+      "mega": "technology"
     },
     {
       "label": "Leadership",
       "href": "category/small-business-leadership/",
-      "match": "small-business-leadership"
+      "match": [
+        "small-business-leadership",
+        "workplace",
+        "women-entrepreneurship",
+        "diversity-and-inclusion",
+        "interviews"
+      ],
+      "mega": "leadership"
     },
     {
       "label": "Finance",
       "href": "category/finance-for-small-businesses/",
-      "match": "finance-for-small-businesses"
+      "match": "finance-for-small-businesses",
+      "mega": "finance"
     },
     {
       "label": "Podcast",
@@ -174,5 +193,370 @@
       "label": "National Business Awards",
       "href": "https://www.smeawards.ca/"
     }
-  ]
+  ],
+  "drawerMenu": [
+    {
+      "label": "Home",
+      "href": ""
+    },
+    {
+      "label": "Latest",
+      "href": "category/latest-news/"
+    },
+    {
+      "label": "Business",
+      "href": "category/small-business/"
+    },
+    {
+      "label": "Entrepreneurship",
+      "href": "category/entrepreneurship/"
+    },
+    {
+      "label": "Technology & AI",
+      "href": "category/technology/"
+    },
+    {
+      "label": "Leadership",
+      "href": "category/small-business-leadership/"
+    },
+    {
+      "label": "Finance",
+      "href": "category/finance-for-small-businesses/"
+    },
+    {
+      "label": "Diversity",
+      "href": "category/diversity-and-inclusion/"
+    },
+    {
+      "label": "Podcast",
+      "href": "podcast/"
+    },
+    {
+      "label": "Magazine",
+      "href": "https://issuu.com/canadiansme"
+    },
+    {
+      "label": "Events",
+      "href": "https://www.smesummit.ca/"
+    },
+    {
+      "label": "Resources",
+      "href": "category/sustainability/"
+    },
+    {
+      "label": "Contact us",
+      "href": "contact-us/"
+    }
+  ],
+  "megaMenus": {
+    "business": {
+      "badge": "BIZ",
+      "featured": "beyond-the-tariff-rate-what-canadian-importers-need-to-know-as-u-s-canada-trade-rules-shift",
+      "cols": [
+        {
+          "heading": "Growth & Strategy",
+          "links": [
+            {
+              "label": "Scaling a Small Business",
+              "href": "category/small-business/"
+            },
+            {
+              "label": "Operations & Productivity",
+              "href": "category/workplace/"
+            },
+            {
+              "label": "Exporting from Canada",
+              "href": "?q=export"
+            },
+            {
+              "label": "Canadian Economy",
+              "href": "category/economy/"
+            }
+          ]
+        },
+        {
+          "heading": "Starting Up",
+          "links": [
+            {
+              "label": "Entrepreneurship",
+              "href": "category/entrepreneurship/"
+            },
+            {
+              "label": "Registering a Business",
+              "href": "?q=registration"
+            },
+            {
+              "label": "Business Plans",
+              "href": "category/sustainability/"
+            },
+            {
+              "label": "Licences & Permits",
+              "href": "?q=licence"
+            }
+          ]
+        },
+        {
+          "heading": "Running It",
+          "links": [
+            {
+              "label": "Procurement",
+              "href": "?q=procurement"
+            },
+            {
+              "label": "Pricing",
+              "href": "?q=pricing"
+            },
+            {
+              "label": "Sustainability",
+              "href": "?q=sustainability"
+            },
+            {
+              "label": "Succession Planning",
+              "href": "?q=succession"
+            }
+          ]
+        },
+        {
+          "heading": "By Province",
+          "links": [
+            {
+              "label": "Alberta",
+              "href": "?q=Alberta"
+            },
+            {
+              "label": "British Columbia",
+              "href": "?q=British%20Columbia"
+            },
+            {
+              "label": "Manitoba",
+              "href": "?q=Manitoba"
+            },
+            {
+              "label": "New Brunswick",
+              "href": "?q=New%20Brunswick"
+            },
+            {
+              "label": "Newfoundland and Labrador",
+              "href": "?q=Newfoundland%20and%20Labrador"
+            },
+            {
+              "label": "Northwest Territories",
+              "href": "?q=Northwest%20Territories"
+            },
+            {
+              "label": "Nova Scotia",
+              "href": "?q=Nova%20Scotia"
+            },
+            {
+              "label": "Nunavut",
+              "href": "?q=Nunavut"
+            },
+            {
+              "label": "Ontario",
+              "href": "?q=Ontario"
+            },
+            {
+              "label": "Prince Edward Island",
+              "href": "?q=Prince%20Edward%20Island"
+            },
+            {
+              "label": "Quebec",
+              "href": "?q=Quebec"
+            },
+            {
+              "label": "Saskatchewan",
+              "href": "?q=Saskatchewan"
+            },
+            {
+              "label": "Yukon",
+              "href": "?q=Yukon"
+            }
+          ]
+        }
+      ]
+    },
+    "technology": {
+      "badge": "AI",
+      "featured": "how-canadian-smes-can-turn-ai-ideas-into-working-business-systems",
+      "cols": [
+        {
+          "heading": "Artificial Intelligence",
+          "links": [
+            {
+              "label": "AI for Small Business",
+              "href": "category/artificial-intelligence/"
+            },
+            {
+              "label": "AI Adoption Guides",
+              "href": "?q=AI"
+            },
+            {
+              "label": "Software & Tools",
+              "href": "category/technology/"
+            },
+            {
+              "label": "Productivity",
+              "href": "?q=productivity"
+            }
+          ]
+        },
+        {
+          "heading": "Security",
+          "links": [
+            {
+              "label": "Cybersecurity",
+              "href": "category/cybersecurity-for-small-businesses/"
+            },
+            {
+              "label": "Security Checklists",
+              "href": "?q=cyber"
+            },
+            {
+              "label": "Accessibility",
+              "href": "?q=accessibility"
+            }
+          ]
+        },
+        {
+          "heading": "Digital",
+          "links": [
+            {
+              "label": "Digital Transformation",
+              "href": "category/innovation/"
+            },
+            {
+              "label": "E-commerce",
+              "href": "category/e-commerce/"
+            },
+            {
+              "label": "Digital Guides",
+              "href": "?q=digital"
+            }
+          ]
+        }
+      ]
+    },
+    "leadership": {
+      "badge": "LEAD",
+      "featured": "the-growing-pains-of-leadership-why-strong-teams-cant-depend-on-one-person",
+      "cols": [
+        {
+          "heading": "People",
+          "links": [
+            {
+              "label": "Hiring & HR",
+              "href": "category/workplace/"
+            },
+            {
+              "label": "HR Templates",
+              "href": "?q=HR"
+            },
+            {
+              "label": "Culture & Leadership",
+              "href": "category/small-business-leadership/"
+            },
+            {
+              "label": "Team Building",
+              "href": "?q=team"
+            }
+          ]
+        },
+        {
+          "heading": "Community",
+          "links": [
+            {
+              "label": "Women in Business",
+              "href": "category/women-entrepreneurship/"
+            },
+            {
+              "label": "Diversity & Inclusion",
+              "href": "category/diversity-and-inclusion/"
+            },
+            {
+              "label": "Entrepreneurs",
+              "href": "category/entrepreneurship/"
+            },
+            {
+              "label": "Our Community",
+              "href": "start-up-stories/"
+            }
+          ]
+        },
+        {
+          "heading": "Voices",
+          "links": [
+            {
+              "label": "Interviews",
+              "href": "category/interviews/"
+            },
+            {
+              "label": "Contributors",
+              "href": "about-us/"
+            },
+            {
+              "label": "Podcast",
+              "href": "podcast/"
+            }
+          ]
+        }
+      ]
+    },
+    "finance": {
+      "badge": "$",
+      "featured": "costs-cash-flow-and-the-road-ahead-for-canadian-smes",
+      "cols": [
+        {
+          "heading": "Money",
+          "links": [
+            {
+              "label": "Money & Finance",
+              "href": "category/finance-for-small-businesses/"
+            },
+            {
+              "label": "Cash Flow",
+              "href": "?q=cash%20flow"
+            },
+            {
+              "label": "Tax",
+              "href": "?q=tax"
+            },
+            {
+              "label": "Pricing & Margins",
+              "href": "?q=pricing"
+            }
+          ]
+        },
+        {
+          "heading": "Capital",
+          "links": [
+            {
+              "label": "Business Funding",
+              "href": "?q=funding"
+            },
+            {
+              "label": "Financing Options",
+              "href": "?q=financing"
+            },
+            {
+              "label": "Grants & Programs",
+              "href": "?q=grants"
+            }
+          ]
+        },
+        {
+          "heading": "Outlook",
+          "links": [
+            {
+              "label": "Canadian Economy",
+              "href": "category/economy/"
+            },
+            {
+              "label": "Scaling a Small Business",
+              "href": "category/small-business/"
+            }
+          ]
+        }
+      ]
+    }
+  }
 }

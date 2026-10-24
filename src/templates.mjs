@@ -178,16 +178,38 @@ const logo = (ctx, light = false) => `
 const SOCIAL_SHORT = { LinkedIn: 'In', YouTube: 'YT', Instagram: 'IG', Facebook: 'FB', X: 'X' };
 const isActive = (item, active) => item.match && (Array.isArray(item.match) ? item.match.includes(active) : item.match === active);
 
+// Menu links: '?q=word' opens the site search for that word (used where there is no section page yet).
+const menuLink = (ctx, l, extra = '') => {
+  if (l.href.startsWith('?q=')) {
+    const q = decodeURIComponent(l.href.slice(3));
+    return `<a href="${ctx.link('')}${l.href}" data-search-q="${esc(q)}"${extra}>${esc(l.label)}</a>`;
+  }
+  return `<a href="${href(ctx, l.href)}"${ext(l.href)}${extra}>${esc(l.label)}</a>`;
+};
+
 const header = (ctx, active) => {
   const menu = ctx.site.menu;
   const social = ['LinkedIn', 'YouTube', 'Instagram', 'Facebook', 'X'].map((n) => ctx.site.social.find((x) => x.label === n)).filter(Boolean);
+  const megas = Object.entries(ctx.site.megaMenus || {})
+    .map(([key, m]) => {
+      const pick = ctx.postsBySlug[m.featured];
+      return `
+      <div class="mega__panel" id="mega-${key}" data-mega-panel="${key}" hidden>
+        <div class="wrap mega__grid">
+          ${m.cols.map((c) => `<div class="mega__col${c.links.length > 6 ? ' mega__col--wide' : ''}"><h3>${esc(c.heading)}</h3><ul>${c.links.map((l) => `<li>${menuLink(ctx, l)}</li>`).join('')}</ul></div>`).join('')}
+          ${pick ? `<a class="mega__pick" href="${postUrl(ctx, pick)}"><span class="mega__badge" aria-hidden="true">${esc(m.badge)}</span><span><span class="mega__pick-label">Editor’s Pick</span><span class="mega__pick-title">${esc(pick.title)}</span></span></a>` : ''}
+        </div>
+      </div>`;
+    })
+    .join('');
   return `
   <a class="skip" href="#main">Skip to content</a>
   <div class="topbar">
     <div class="wrap topbar__inner">
       <p class="topbar__left"><strong>${longDate(ctx.now.toISOString())}</strong><span class="topbar__bar" aria-hidden="true"></span><span class="topbar__strap">${esc(ctx.site.strapline)}</span></p>
       <div class="topbar__right">
-        <nav class="topbar__social" aria-label="CanadianSME on social media">${social.map((x) => `<a href="${x.href}" target="_blank" rel="noopener" aria-label="${esc(x.label)}">${SOCIAL_SHORT[x.label]}</a>`).join('')}</nav>
+        <nav class="topbar__social" aria-label="CanadianSME on social media">${social.map((x) => `<a href="${x.href}" target="_blank" rel="noopener" aria-label="CanadianSME on ${esc(x.label)}">${SOCIAL_SHORT[x.label]}</a>`).join('')}</nav>
+        <span class="topbar__bar" aria-hidden="true"></span>
         <button class="topbar__search" type="button" data-search-open>${icon.search} Search</button>
       </div>
     </div>
@@ -196,44 +218,35 @@ const header = (ctx, active) => {
     <div class="wrap masthead__inner">
       ${logo(ctx)}
       <nav class="mainnav" aria-label="Main menu">
-        ${menu.map((m) => `<a href="${href(ctx, m.href)}"${ext(m.href)}${isActive(m, active) ? ' aria-current="page"' : ''}>${esc(m.label)}</a>`).join('')}
+        <ul>
+          ${menu
+            .map((m) => {
+              const cur = isActive(m, active) ? ' aria-current="page"' : '';
+              return m.mega
+                ? `<li data-mega="${m.mega}"><a href="${href(ctx, m.href)}"${cur} aria-haspopup="true" aria-expanded="false" aria-controls="mega-${m.mega}">${esc(m.label)}</a></li>`
+                : `<li>${menuLink(ctx, m, cur)}</li>`;
+            })
+            .join('')}
+        </ul>
       </nav>
       <div class="masthead__actions">
         <button class="icon-btn masthead__search" type="button" data-search-open aria-label="Search articles">${icon.search}</button>
-        <a class="btn btn--red masthead__sub" href="${ctx.link('subscription/')}">Subscribe Free</a>
-        <button class="menu-btn" type="button" data-menu-open aria-label="Open menu">${icon.menu}<span>Menu</span></button>
+        <a class="masthead__sub" href="${ctx.link('subscription/')}">Subscribe Free</a>
+        <button class="menu-btn" type="button" data-menu-open aria-label="Open menu" aria-expanded="false"><span aria-hidden="true">≡</span> Menu</button>
       </div>
     </div>
+    <div class="mega" data-mega-wrap>${megas}</div>
   </header>
   <div class="drawer" data-drawer hidden>
-    <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Site menu">
       <div class="drawer__top">
-        ${logo(ctx)}
-        <button class="icon-btn drawer__close" type="button" data-menu-close aria-label="Close menu">${icon.close}</button>
+        <span class="drawer__heading">Menu</span>
+        <button class="drawer__close" type="button" data-menu-close aria-label="Close menu">×</button>
       </div>
-      <nav class="drawer__main" aria-label="Main menu">
-        ${menu.map((m) => `<a href="${href(ctx, m.href)}"${ext(m.href)}${isActive(m, active) ? ' aria-current="page"' : ''}>${esc(m.label)}</a>`).join('')}
+      <nav class="drawer__list" aria-label="Site menu">
+        ${ctx.site.drawerMenu.map((l) => menuLink(ctx, l)).join('')}
       </nav>
-      <div class="drawer__group">
-        <p class="drawer__title">All topics</p>
-        <nav class="drawer__chips" aria-label="All topics">${Object.values(ctx.categories).map((c) => `<a href="${ctx.link(`category/${c.slug}/`)}"${tone(c.slug)}>${esc(c.name)}</a>`).join('')}</nav>
-      </div>
-      <div class="drawer__group drawer__cols">
-        <nav aria-label="Events">
-          <p class="drawer__title">Events</p>
-          ${ctx.site.events.map((l) => `<a href="${l.href}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join('')}
-        </nav>
-        <nav aria-label="CanadianSME">
-          <p class="drawer__title">CanadianSME</p>
-          <a href="${ctx.link('about-us/')}">About us</a>
-          <a href="${ctx.link('ups-small-business/')}">UPS Small Business</a>
-          <a href="${ctx.link('start-up-stories/')}">Start-up stories</a>
-          <a href="${ctx.link('contact-us/')}">Advertise</a>
-          <a href="${ctx.link('contact-us/')}">Contact us</a>
-        </nav>
-      </div>
-      <a class="btn btn--red btn--block" href="${ctx.link('subscription/')}">Subscribe Free</a>
-      <nav class="drawer__social" aria-label="Social">${social.map((x) => `<a href="${x.href}" target="_blank" rel="noopener">${esc(x.label)}</a>`).join('')}</nav>
+      <a class="drawer__sub" href="${ctx.link('subscription/')}">Subscribe Free</a>
     </div>
   </div>
   <div class="search" data-search hidden>
@@ -314,7 +327,7 @@ ${image ? `<meta property="og:image" content="${img(image, 1200)}">\n<meta name=
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://i0.wp.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
 <link rel="stylesheet" href="${ctx.link('assets/styles.css')}?v=${ctx.version}">
 ${jsonld ? `<script type="application/ld+json">${safeJson(jsonld)}</script>` : ''}
 </head>
