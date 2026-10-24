@@ -686,7 +686,7 @@ export const article = (ctx, post, html) => {
   </article>
   ${related.length ? `
   <section class="wrap section story__related" aria-labelledby="related-title">
-    ${head(ctx, `Related ${cat.name.toLowerCase()} stories`, `category/${cat.slug}/`).replace('<h2>', '<h2 id="related-title">')}
+    ${head(ctx, `More in ${cat.name}`, `category/${cat.slug}/`).replace('<h2>', '<h2 id="related-title">')}
     <div class="grid grid--4">${related.map((p) => card(ctx, p, vt)).join('')}</div>
   </section>` : ''}
   <div class="wrap section section--ad">${ad(ctx, 'ups-leaderboard')}</div>`;
