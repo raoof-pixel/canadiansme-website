@@ -907,31 +907,36 @@ export const article = (ctx, post, html) => {
 
   const body = `
   <div class="progress" data-progress aria-hidden="true"></div>
-  ${crumbs(ctx, [[cat.name, `category/${cat.slug}/`], [post.title]])}
   <article class="article">
-    <header class="wrap"><div class="article__head">
-      <p class="article__kicker"><a class="pill" href="${catUrl(ctx, cat.slug)}">${esc(cat.name)}</a>${partner ? `<span class="tag tag--gold">Partner Content · ${esc(author.name)}</span>` : ''}</p>
-      <h1 class="h-page">${esc(post.title)}</h1>
-      <p class="article__standfirst">${esc(post.excerpt)}</p>
-      <div class="article__byline">
-        <span class="avatar" aria-hidden="true">${esc(initials(author.name))}</span>
-        <div>
-          <p class="article__author"><a href="${ctx.link(`author/${author.slug}/`)}">${esc(author.name)}</a>${author.role ? `<span>${esc(author.role)}</span>` : ''}</p>
-          <p class="meta">Published <time datetime="${post.date}">${shortDate(post.date)}</time>${post.modified && post.modified.slice(0, 10) !== post.date.slice(0, 10) ? ` · Updated <time datetime="${post.modified}">${shortDate(post.modified)}</time>` : ''} · ${post.readingTime} min read</p>
+    <header class="story__hero">
+      <div class="story__glow" aria-hidden="true" style="background-image:url('${img(post.image, 500)}')"></div>
+      <div class="wrap story__hero-inner">
+        <div class="story__intro">
+          <nav class="crumbs-light" aria-label="Breadcrumb"><a href="${ctx.link('')}">Home</a><span aria-hidden="true">/</span><a href="${catUrl(ctx, cat.slug)}">${esc(cat.name)}</a></nav>
+          <p class="article__kicker"><a class="pill" href="${catUrl(ctx, cat.slug)}">${esc(cat.name)}</a>${partner ? `<span class="tag tag--gold">Partner Content · ${esc(author.name)}</span>` : ''}</p>
+          <h1 class="story__title">${esc(post.title)}</h1>
+          <p class="story__dek">${esc(post.excerpt)}</p>
+          <div class="article__byline">
+            <span class="avatar avatar--light" aria-hidden="true">${esc(initials(author.name))}</span>
+            <div>
+              <p class="article__author"><a href="${ctx.link(`author/${author.slug}/`)}">${esc(author.name)}</a>${author.role ? `<span>${esc(author.role)}</span>` : ''}</p>
+              <p class="meta">Published <time datetime="${post.date}">${shortDate(post.date)}</time>${post.modified && post.modified.slice(0, 10) !== post.date.slice(0, 10) ? ` · Updated <time datetime="${post.modified}">${shortDate(post.modified)}</time>` : ''} · ${post.readingTime} min read</p>
+            </div>
+          </div>
+          <div class="share share--light" role="group" aria-label="Share this article">
+            <a class="btn btn--ghost-dark btn--sm" href="https://www.linkedin.com/sharing/share-offsite/?url=${u}" target="_blank" rel="noopener">Share</a>
+            <a class="btn btn--ghost-dark btn--sm" href="https://twitter.com/intent/tweet?url=${u}&amp;text=${t}" target="_blank" rel="noopener">Post</a>
+            <button class="btn btn--ghost-dark btn--sm" type="button" data-copy="${pageUrl}">Copy link</button>
+            <button class="btn btn--ghost-dark btn--sm bookmark bookmark--btn" type="button" data-bookmark="${esc(post.slug)}" aria-pressed="false" aria-label="Bookmark this article">♡</button>
+            <span class="share__msg" role="status" aria-live="polite" data-share-msg></span>
+          </div>
         </div>
+        <figure class="story__figure">
+          ${picture(post, { w: 1400, sizes: '(min-width: 1000px) 46vw, 92vw', eager: true, alt: post.imageAlt || '' })}
+          ${post.imageCaption ? `<figcaption>${esc(post.imageCaption)}</figcaption>` : ''}
+        </figure>
       </div>
-      <div class="share" role="group" aria-label="Share this article">
-        <a class="btn btn--secondary btn--sm" href="https://www.linkedin.com/sharing/share-offsite/?url=${u}" target="_blank" rel="noopener">Share</a>
-        <a class="btn btn--secondary btn--sm" href="https://twitter.com/intent/tweet?url=${u}&amp;text=${t}" target="_blank" rel="noopener">Post</a>
-        <button class="btn btn--secondary btn--sm" type="button" data-copy="${pageUrl}">Copy link</button>
-        <button class="btn btn--secondary btn--sm bookmark bookmark--btn" type="button" data-bookmark="${esc(post.slug)}" aria-pressed="false" aria-label="Bookmark this article">♡</button>
-        <span class="share__msg" role="status" aria-live="polite" data-share-msg></span>
-      </div>
-    </div></header>
-    <figure class="wrap article__figure">
-      ${picture(post, { w: 1600, sizes: '(min-width: 1280px) 1232px, 96vw', eager: true, alt: post.imageAlt || '' })}
-      ${post.imageCaption ? `<figcaption>${esc(post.imageCaption)}</figcaption>` : ''}
-    </figure>
+    </header>
     <div class="wrap article__layout">
       <div class="prose article__body">
         ${bodyHtml || fallback}
