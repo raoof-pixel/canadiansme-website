@@ -38,6 +38,47 @@
     if (img.loading !== 'lazy' && img.complete && img.naturalWidth === 0) handleError(img);
   });
 
+  // Homepage slider: soft crossfade, auto-advance, pause on hover/focus, swipe.
+  $$('[data-slider]').forEach((root) => {
+    const slides = $$('[data-slide]', root);
+    const dots = $$('[data-dot]', root);
+    if (slides.length < 2) return;
+    let index = 0;
+    let timer = null;
+    const show = (i) => {
+      index = (i + slides.length) % slides.length;
+      slides.forEach((s, n) => {
+        const on = n === index;
+        s.classList.toggle('is-active', on);
+        s.toggleAttribute('aria-hidden', !on);
+        $$('a, button', s).forEach((el) => (on ? el.removeAttribute('tabindex') : el.setAttribute('tabindex', '-1')));
+      });
+      dots.forEach((d, n) => d.setAttribute('aria-current', String(n === index)));
+    };
+    const stop = () => clearInterval(timer);
+    const play = () => { if (!reduce) { stop(); timer = setInterval(() => show(index + 1), 7000); } };
+    $('[data-prev]', root)?.addEventListener('click', () => { show(index - 1); play(); });
+    $('[data-next]', root)?.addEventListener('click', () => { show(index + 1); play(); });
+    dots.forEach((d) => d.addEventListener('click', () => { show(Number(d.dataset.dot)); play(); }));
+    const pause = () => { stop(); root.classList.add('is-paused'); };
+    const resume = () => { root.classList.remove('is-paused'); play(); };
+    root.addEventListener('mouseenter', pause);
+    root.addEventListener('mouseleave', resume);
+    root.addEventListener('focusin', pause);
+    root.addEventListener('focusout', resume);
+    if (reduce) root.classList.add('is-paused');
+    let x0 = null;
+    root.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+    root.addEventListener('touchend', (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 40) { show(index + (dx < 0 ? 1 : -1)); play(); }
+      x0 = null;
+    });
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : play()));
+    play();
+  });
+
   // Today's date in the top bar (pages are built ahead of time).
   const today = $('[data-today]');
   if (today) today.textContent = new Date().toLocaleDateString('en-CA', { month: 'long', day: 'numeric', year: 'numeric' });
@@ -279,7 +320,7 @@
 
   // Cards rise gently into place as they scroll into view (movement only: text is never hidden).
   if ('IntersectionObserver' in window && !reduce) {
-    const items = $$('.card, .tile, .tool-card, .res-card, .episode, .event-card, .comm__col, .cover-card, .mini').filter((el) => !el.closest('.drawer, .search, .reader'));
+    const items = $$('.card, .tile, .tool-card, .res-card, .episode, .event-card, .comm__col, .cover-card, .mini').filter((el) => !el.closest('.drawer, .search, .reader, .slider'));
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
         if (!e.isIntersecting) return;
