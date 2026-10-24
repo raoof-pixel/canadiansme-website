@@ -232,31 +232,6 @@ const footer = (ctx) => `
     </div>
   </footer>`;
 
-// Floating side cards for very wide screens (latest issue left, free subscription right).
-const rails = (ctx) => {
-  const r = ctx.home.rails;
-  if (!r) return '';
-  const m = mag(ctx, r.left.magazine);
-  return `<aside class="rail rail--left" data-rail aria-label="Latest magazine issue">
-  <div class="rail-card rail-card--mag">
-    <p class="label">Latest issue</p>
-    ${cover(ctx, m.id, { sizes: '170px' })}
-    <p class="rail-card__title">${esc(m.issue)}</p>
-    <a class="btn btn--dark btn--block" href="${m.href}" target="_blank" rel="noopener"${readerAttrs(m)}>Read it free</a>
-  </div>
-</aside>
-<aside class="rail rail--right" data-rail aria-labelledby="rail-sub-title">
-  <form class="rail-card" action="${ctx.link('subscription/')}" method="get">
-    <h2 id="rail-sub-title">Subscribe to CanadianSME for free</h2>
-    <p>Each new issue, event updates and business insights in your inbox.</p>
-    <div class="field"><label for="rail-first">First name</label><input id="rail-first" name="first" autocomplete="given-name" required></div>
-    <div class="field"><label for="rail-email">Email</label><input id="rail-email" name="email" type="email" autocomplete="email" required></div>
-    <label class="check"><input type="checkbox" required> I agree to receive emails from CanadianSME.</label>
-    <button class="btn btn--red btn--block" type="submit">Subscribe free</button>
-  </form>
-</aside>`;
-};
-
 const readerModal = () => `
 <div class="reader" data-reader-modal hidden>
   <div class="reader__panel" role="dialog" aria-modal="true" aria-labelledby="reader-title">
@@ -301,7 +276,6 @@ ${header(ctx, active)}
 <main id="main">
 ${body}
 </main>
-${rails(ctx)}
 ${footer(ctx)}
 ${readerModal()}
 <script src="${ctx.link('assets/search-index.js')}?v=${ctx.version}" defer></script>
@@ -357,10 +331,32 @@ const sections = {
       </article>`;
       })
       .join('')}
-    <div class="wrap hero__controls">
-      <div class="hero__dots">${s.slides.map((_, i) => `<button type="button" data-dot="${i}" aria-label="Show slide ${i + 1}"${i === 0 ? ' aria-current="true"' : ''}><span></span></button>`).join('')}</div>
-      <button class="round-btn round-btn--light" type="button" data-prev aria-label="Previous slide">${icon.prev}</button>
-      <button class="round-btn round-btn--light" type="button" data-next aria-label="Next slide">${icon.next}</button>
+    <div class="hero__bar">
+      <div class="wrap hero__bar-inner">
+        <div class="hero__tabs" role="tablist" aria-label="Choose a story">
+          ${s.slides
+            .map((sl, i) => {
+              let pic, kicker, title;
+              if (sl.kind === 'magazine') {
+                const m = mag(ctx, sl.magazine);
+                pic = `<img src="${img(m.cover, 160)}" alt="" width="54" height="70" loading="lazy" class="hero__tab-cover">`;
+                kicker = 'Magazine';
+                title = `${m.issue} issue`;
+              } else {
+                const p = P(ctx, sl.post);
+                pic = `<img src="${img(p.image, 240)}" alt="" width="92" height="62" loading="lazy">`;
+                kicker = sl.label || catOf(ctx, p).name;
+                title = p.title;
+              }
+              return `<button class="hero__tab" type="button" role="tab" data-dot="${i}" aria-label="Show slide ${i + 1}: ${esc(title)}"${i === 0 ? ' aria-current="true"' : ''}><span class="hero__tab-line" aria-hidden="true"></span><span class="hero__tab-pic">${pic}</span><span class="hero__tab-text"><span class="hero__tab-kicker">${esc(kicker)}</span><span class="hero__tab-title">${esc(title)}</span></span></button>`;
+            })
+            .join('')}
+        </div>
+        <div class="hero__arrows">
+          <button class="round-btn round-btn--light" type="button" data-prev aria-label="Previous slide">${icon.prev}</button>
+          <button class="round-btn round-btn--light" type="button" data-next aria-label="Next slide">${icon.next}</button>
+        </div>
+      </div>
     </div>
   </section>`,
 
